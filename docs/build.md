@@ -42,3 +42,13 @@ NACHOS_COMPAT=1 bash scripts/verify-baseline.sh /tmp/nachos-baseline-results
 This destination must be new and on Linux-native storage. Without NACHOS_COMPAT=1, strict modern-host compilation is retained for comparison. The original dependent-base template lookups fail strict compilation; compatibility builds passed after rebuilding old dependency paths and relocating legacy MIPS search prefixes. The original MP1 bundled write/read pair exited normally. The original MP2 pair printed expected output and return messages but timed out after 20 seconds; it is a reproduced failure, not a passing baseline.
 
 The separate shutdown regression expects that baseline failure and verifies normal termination in the repaired copy. Other focused repairs cover page boundaries, nonidentity mappings, error recovery and memory pressure. See [the verification summary](verification-summary.md), repair-specific reports and [known limits](known-issues.md). Historical local log names in those reports identify archived evidence; they are not public filesystem links or dependencies. Portable result records are included under docs/verification.
+
+## Recovered MP3
+
+Use the same Linux/32-bit prerequisites. MP3 now builds strictly with gnu++11, without -fpermissive. From a full clone:
+
+```sh
+bash NachOS-4.0_MP3/scripts/verify-file-io.sh /tmp/mp3-results
+```
+
+The output directory must be new. The script exports the current MP3 subtree into Linux-native temporary storage, reuses the identical MP2 legacy tools and runs all MP3 regression suites. The old nested Git object, report PDFs and historical binaries are not needed. See [integration details](../NachOS-4.0_MP3/docs/integration.md).

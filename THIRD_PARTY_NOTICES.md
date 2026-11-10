@@ -11,3 +11,6 @@ This is an inventory, not a replacement license or a completed redistribution re
 | Course PDFs | Historical specs and reports in the original snapshot | Review publication scope and remove identifying/internal information in any public derivative |
 
 No blanket MIT or other new license is applied to the repository. The existing framework notices remain authoritative for their covered material. Course publication conditions and toolchain provenance remain unresolved; local preparation can proceed while these are investigated.
+
+
+The recovered MP3 import retains its COPYRIGHT and source notices, including UC Regents and the kernel syscall interface attribution. It introduces no new PDF or legacy binary package: its compiler/converter are reused from the existing identical MP2 snapshot. Recovery of the original commit does not establish a new blanket license or complete course/toolchain redistribution provenance.
