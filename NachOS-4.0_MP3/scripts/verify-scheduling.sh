@@ -13,9 +13,8 @@ printf '%s\n' "$native" > "$results/native-path.txt"
 # MP3 is ordinary source now; no missing submodule or recovered Git object is needed.
 git -C "$root" archive HEAD:NachOS-4.0_MP3 | tar -x -C "$native"
 # Reuse the identical toolchain/converter already tracked in MP2.
-cp -a "$root/NachOS-4.0_MP2/usr" "$native/usr"
-mkdir -p "$native/coff2noff"
-cp "$root/NachOS-4.0_MP2/coff2noff/coff2noff.x86Linux" "$native/coff2noff/"
+# Export Git blobs, not a Windows checkout whose specs may have CRLF endings.
+git -C "$root" archive HEAD NachOS-4.0_MP2/usr NachOS-4.0_MP2/coff2noff/coff2noff.x86Linux | tar -x --strip-components=1 -C "$native"
 for file in code/threads/alarm.cc code/threads/scheduler.cc code/threads/scheduler.h code/threads/thread.cc code/threads/thread.h code/lib/list.cc code/build.linux/Makefile.dep code/threads/kernel.cc code/threads/kernel.h code/userprog/addrspace.cc code/userprog/addrspace.h code/userprog/exception.cc code/filesys/filesys.h code/filesys/openfile.h code/lib/sysdep.h code/lib/sysdep.cc code/userprog/ksyscall.h; do
  cp "$repo/$file" "$native/$file"
 done

@@ -1,5 +1,7 @@
 # MP3 syscall addresses, strings and buffer boundaries — 2026-11-10
 
+**Integration note:** This report records its original local repair stage. For the current ordinary-directory layout, GitHub publication and portable commands, see [integration details](integration.md).
+
 **Subsequent file-I/O repair:** [recoverable I/O and descriptor ownership/cleanup](file-io-fix.md) supersedes the corresponding open limitations in this historical report. Current verification scripts overlay seventeen maintained source files; original-stage hashes remain preserved evidence.
 
 This local stage changes only code/userprog/exception.cc relative to the memory-loader delivery. The cumulative original-file change set is twelve files. It adapts the implemented MP3 syscall boundary to its paged address spaces, keeping the public syscall numbers, stubs, file-handle scheme and scalar-call behavior. It does not import a different assignment's handler wholesale.

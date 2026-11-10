@@ -1,5 +1,7 @@
 # MP3 build repair — 2026-11-10
 
+**Integration note:** This report records its original local repair stage. For the current ordinary-directory layout, GitHub publication and portable commands, see [integration details](integration.md).
+
 **Subsequent file-I/O repair:** [recoverable I/O and descriptor ownership/cleanup](file-io-fix.md) supersedes the corresponding open limitations in this historical report. Current verification scripts overlay seventeen maintained source files; original-stage hashes remain preserved evidence.
 
 **Subsequent syscall-boundary repair:** [paged address/string/buffer validation](user-memory-fix.md) now addresses the implemented syscall memory boundary described as open in this historical report. Current scripts overlay twelve files; earlier source hashes and results remain the evidence for their original stage.

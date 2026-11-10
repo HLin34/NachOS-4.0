@@ -1,5 +1,7 @@
 # MP3 file I/O errors and descriptor recovery — 2026-11-10
 
+**Integration note:** This report records its original local repair stage. For the current ordinary-directory layout, GitHub publication and portable commands, see [integration details](integration.md).
+
 This local stage repairs recoverable FILESYS_STUB host-file failures and user descriptor ownership. It adds five modified original files to the preceding twelve-file delivery and extends Thread::Finish, for a cumulative seventeen-file source set. The prior syscall address/string/buffer implementation remains byte-for-byte unchanged. Historical ZIP, recovered snapshot and Git bundle remain separate and unchanged; nothing is published to GitHub.
 
 ## Failure and transfer policy
