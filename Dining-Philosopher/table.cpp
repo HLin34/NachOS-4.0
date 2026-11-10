@@ -1,45 +1,95 @@
 #include "table.hpp"
-#include "stdio.h"
-#include "config.hpp"
+#include <cassert>
+#include <cstdio>
+#include <cstdlib>
+#include <stdexcept>
+#include <system_error>
 
-Table::Table(int n) {
-    // TODO: implement table constructor (value, mutex, cond)
-    currentTurn = 0;                          // Starvation
-    value = 4;                                // means that the table can contain n people                        
-    pthread_mutex_init(&mutex, NULL);         // initialize a mutex
-    pthread_cond_init(&cond, NULL);           // initialize a condition variable
+namespace {
+void Check(int status, const char *operation) {
+    if (status != 0) { fprintf(stderr, "%s failed: %d\n", operation, status); abort(); }
+}
+int ValidCount(int n) {
+    if (n < 2) throw std::invalid_argument("at least two philosophers are required");
+    return n;
+}
 }
 
-void Table::wait() {
-    // TODO: implement semaphore wait
-    pthread_mutex_lock(&mutex);               // enter critical section, lock mutex
-    while(value <= 0){
-        pthread_cond_wait(&cond, &mutex);     // Wait for condition variable COND to be signaled or broadcast. 
-                                              // MUTEX is assumed to be locked before.
+Table::Table(int n) : participants(ValidCount(n)), occupied(participants, false),
+    state(participants, 0), head(NULL), tail(NULL), currentTurn(0) {
+    int status = pthread_mutex_init(&mutex, NULL);
+    if (status != 0) throw std::system_error(status, std::generic_category(), "table mutex init");
+    status = pthread_cond_init(&cond, NULL);
+    if (status != 0) {
+        pthread_mutex_destroy(&mutex);
+        throw std::system_error(status, std::generic_category(), "table condition init");
     }
-    value--;                                  // means that the amount of people the table can contain decline 1                    
-    pthread_mutex_unlock(&mutex);             // leave critical section, release the lock
 }
-
-void Table::signal() {
-    // TODO: implement semaphore signal
-    pthread_mutex_lock(&mutex);               // enter critical section, lock mutex
-    value++;                                  // means that the amount of people the table can contain increase 1
-    pthread_cond_signal(&cond);               // Wake up one thread waiting for condition variable
-    pthread_mutex_unlock(&mutex);             // leave critical section, release the lock
+void Table::validate(int id) const {
+    if (id < 0 || id >= participants) throw std::out_of_range("philosopher id");
 }
-
-int Table::getCurrentTurn(){                  // Starvation
-    return currentTurn;
+void Table::remove(Request *request) {
+    if (request->previous) request->previous->next = request->next;
+    else head = request->next;
+    if (request->next) request->next->previous = request->previous;
+    else tail = request->previous;
+    request->queued = false;
 }
-
-void Table::updateCurrentTurn(){              // Starvation
-    currentTurn = (currentTurn + 1) % PHILOSOPHERS;
-    printf("update to %d's turn.\n", currentTurn);
+void Table::FinishWait(void *arg) {
+    Request *request = static_cast<Request*>(arg);
+    Table *table = request->table;
+    // cond_wait reacquires the mutex before cancellation invokes this handler.
+    if (request->queued) {
+        table->remove(request);
+        table->state[request->id] = 0;
+        Check(pthread_cond_broadcast(&table->cond), "queue cancellation wakeup");
+    }
+    Check(pthread_mutex_unlock(&table->mutex), "table wait unlock");
 }
-
+void Table::wait(int id) {
+    validate(id);
+    Check(pthread_mutex_lock(&mutex), "table lock");
+    assert(state[id] == 0); // At most one outstanding request per philosopher.
+    Request request = {this, id, tail, NULL, true};
+    if (tail) tail->next = &request;
+    else head = &request;
+    tail = &request;
+    state[id] = 1;
+    const int right = (id + 1) % participants;
+    pthread_cleanup_push(FinishWait, &request);
+    // No bypass: only the oldest request can reserve its pair. Once granted,
+    // a disjoint next request may proceed while this meal is still active.
+    while (head != &request || occupied[id] || occupied[right])
+        Check(pthread_cond_wait(&cond, &mutex), "table wait");
+    remove(&request);
+    occupied[id] = occupied[right] = true;
+    state[id] = 2;
+    Check(pthread_cond_broadcast(&cond), "queue grant wakeup");
+    pthread_cleanup_pop(1);
+}
+void Table::signal(int id) {
+    validate(id);
+    Check(pthread_mutex_lock(&mutex), "table lock");
+    assert(state[id] == 2);
+    occupied[id] = occupied[(id + 1) % participants] = false;
+    state[id] = 0;
+    Check(pthread_cond_broadcast(&cond), "pair release wakeup");
+    Check(pthread_mutex_unlock(&mutex), "table unlock");
+}
+int Table::getCurrentTurn() {
+    Check(pthread_mutex_lock(&mutex), "turn read lock");
+    int turn = currentTurn;
+    Check(pthread_mutex_unlock(&mutex), "turn read unlock");
+    return turn;
+}
+void Table::updateCurrentTurn() {
+    Check(pthread_mutex_lock(&mutex), "turn update lock");
+    currentTurn = (currentTurn + 1) % participants;
+    Check(pthread_mutex_unlock(&mutex), "turn update unlock");
+}
 Table::~Table() {
-    // TODO: implement table destructor (mutex, cond)
-    pthread_mutex_destroy(&mutex);            // destroy a mutex
-    pthread_cond_destroy(&cond);              // destroy a condition variable
+    assert(head == NULL && tail == NULL);
+    for (int id = 0; id < participants; ++id) assert(state[id] == 0);
+    Check(pthread_cond_destroy(&cond), "table condition destroy");
+    Check(pthread_mutex_destroy(&mutex), "table mutex destroy");
 }

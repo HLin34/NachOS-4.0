@@ -33,6 +33,8 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <cerrno>
+#include <climits>
+#include <sys/stat.h>
 
 #ifdef SOLARIS
 // KMS
@@ -311,6 +313,55 @@ OpenForWrite(char *name)
 
     ASSERT(fd >= 0); 
     return fd;
+}
+
+// Recoverable host-file operations for the stub filesystem. Keep the legacy
+// fail-fast interfaces above for simulator infrastructure that still needs them.
+int TryOpenForWrite(char *name)
+{
+    if (name == NULL || name[0] == '\0') return -1;
+    int fd;
+    do { fd = open(name, O_RDWR | O_CREAT | O_TRUNC, 0666); }
+    while (fd < 0 && errno == EINTR);
+    return fd;
+}
+
+static bool ValidFileSpan(const char *buffer, int size, int position)
+{
+    return size >= 0 && position >= 0 && size <= INT_MAX - position &&
+           (size == 0 || buffer != NULL);
+}
+
+int TryReadAt(int fd, char *buffer, int size, int position)
+{
+    if (!ValidFileSpan(buffer, size, position)) return -1;
+    ssize_t result;
+    do { result = pread(fd, buffer, size, position); }
+    while (result < 0 && errno == EINTR);
+    return (int)result;
+}
+
+int TryWriteAt(int fd, char *buffer, int size, int position)
+{
+    if (!ValidFileSpan(buffer, size, position)) return -1;
+    ssize_t result;
+    do { result = pwrite(fd, buffer, size, position); }
+    while (result < 0 && errno == EINTR);
+    return (int)result;
+}
+
+int TryFileLength(int fd)
+{
+    struct stat info;
+    if (fstat(fd, &info) < 0 || info.st_size < 0 || info.st_size > INT_MAX) return -1;
+    return (int)info.st_size;
+}
+
+int TryCloseFile(int fd)
+{
+    // Do not retry close after EINTR: on Linux the descriptor is already released
+    // and may have been reused. Ownership is consumed even on an error return.
+    return close(fd);
 }
 
 //----------------------------------------------------------------------

@@ -44,6 +44,12 @@ extern bool PollFile(int fd);
 // File operations: open/read/write/lseek/close, and check for error
 // For simulating the disk and the console devices.
 extern int OpenForWrite(char *name);
+// Nonfatal file operations; return actual byte counts or -1 on failure.
+extern int TryOpenForWrite(char *name);
+extern int TryReadAt(int fd, char *buffer, int size, int position);
+extern int TryWriteAt(int fd, char *buffer, int size, int position);
+extern int TryFileLength(int fd);
+extern int TryCloseFile(int fd);
 extern int OpenForReadWrite(char *name, bool crashOnError);
 extern void Read(int fd, char *buffer, int nBytes);
 extern int ReadPartial(int fd, char *buffer, int nBytes);

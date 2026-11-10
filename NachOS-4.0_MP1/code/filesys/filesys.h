@@ -37,6 +37,7 @@
 #include "debug.h"  //just for test!!!
 #include "openfile.h"
 #include "sysdep.h"
+#include <new>
 
 #ifdef FILESYS_STUB  // Temporarily implement file system calls as
                      // calls to UNIX, until the real file system
@@ -49,99 +50,59 @@ class FileSystem {
     for (int i = 0; i < 20; i++) OpenFileTable[i] = NULL;
   }
 
-  bool Create(char *name) {
-    int fileDescriptor = OpenForWrite(name);
-
-    if (fileDescriptor == -1) return FALSE;
-    Close(fileDescriptor);
-    return TRUE;
-  }
-  // The OpenFile function is used for open user program  [userprog/addrspace.cc]
-  OpenFile *Open(char *name) {
-    int fileDescriptor = OpenForReadWrite(name, FALSE);
-    if (fileDescriptor == -1) return NULL;
-    return new OpenFile(fileDescriptor);
-  }
-
-  // The OpenAFile function is used for kernel open system call
-  /* TODO (Open)
-    1) If the file is not exist or OpenFileTable is full, return -1
-    2) Otherwise, find the empty table to place the new created OpenFile and return its index.
-  */
-  // OpenFileId OpenAFile(char *name) {}
-  OpenFileId OpenAFile(char *name) 
-  {
-    int fileDescriptor = OpenForReadWrite(name,FALSE);
-    if (fileDescriptor == -1) {
-      return -1;
+  ~FileSystem() {
+    for (int i = 0; i < 20; i++) {
+      delete OpenFileTable[i];
+      OpenFileTable[i] = NULL;
     }
-    for(int i = 0;i < 20; i++)
-    {
-      if(OpenFileTable[i] == NULL)
-      {
-        OpenFileTable[i] = new OpenFile(fileDescriptor);
-        return i;
+  }
+
+  bool Create(char *name) {
+    int fd = TryOpenForWrite(name);
+    if (fd < 0) return FALSE;
+    return TryCloseFile(fd) == 0;
+  }
+
+  // Executable loading owns the returned object independently of the user table.
+  OpenFile *Open(char *name) {
+    if (name == NULL || name[0] == '\0') return NULL;
+    int fd = OpenForReadWrite(name, FALSE);
+    if (fd < 0) return NULL;
+    OpenFile *file = new (std::nothrow) OpenFile(fd);
+    if (file == NULL) TryCloseFile(fd);
+    return file;
+  }
+
+  OpenFileId OpenAFile(char *name) {
+    if (name == NULL || name[0] == '\0') return -1;
+    // Reject a full table before acquiring a host descriptor.
+    for (int id = 0; id < 20; id++) {
+      if (OpenFileTable[id] == NULL) {
+        OpenFile *file = Open(name);
+        if (file == NULL) return -1;
+        OpenFileTable[id] = file;
+        return id;
       }
     }
     return -1;
   }
 
-
-  // The WriteFile function is used for kernel write system call
-  /* TODO (Write)
-    1) If the id is out of range or indicates to a non-exist file, return -1
-    2) Otherwise, call OpenFile function to execute write and return the number of characters. 
-  */
-  // int WriteFile(char *buffer, int size, OpenFileId id) {}
-  int WriteFile(char *buffer, int size, OpenFileId id) 
-  {
-    if( id<20 && id>=0 )
-    {
-      DEBUG(dbgSys, "Writing Start\n");
-      OpenFile* fileDescriptor = OpenFileTable[id];
-      if(fileDescriptor==NULL) return -1;
-      else
-      DEBUG(dbgSys, "Writing Completed\n");
-      return  fileDescriptor->Write(buffer, size);
-    }else return -1;
+  int WriteFile(char *buffer, int size, OpenFileId id) {
+    if (id < 0 || id >= 20 || OpenFileTable[id] == NULL) return -1;
+    return OpenFileTable[id]->Write(buffer, size);
   }
 
-  // The ReadFile function is used for kernel read system call
-  /* TODO (Read)
-    1) If the id is out of range or indicates to a non-exist file, return -1
-    2) Otherwise, call OpenFile function to execute read and return the number of characters. 
-  */
-  // int ReadFile(char *buffer, int size, OpenFileId id) {}
-  int ReadFile(char *buffer, int size, OpenFileId id) 
-  {
-    if( id<20 && id>=0 )
-    {
-      DEBUG(dbgSys, "Reading Start\n");
-      OpenFile* fileDescriptor = OpenFileTable[id];
-      if(fileDescriptor==NULL) return -1;
-      else
-      DEBUG(dbgSys, "Reading Completed\n");
-      return  fileDescriptor->Read(buffer, size);
-    }else return -1;
+  int ReadFile(char *buffer, int size, OpenFileId id) {
+    if (id < 0 || id >= 20 || OpenFileTable[id] == NULL) return -1;
+    return OpenFileTable[id]->Read(buffer, size);
   }
-  // The CloseFile function is used for kernel close system call
-  /* TODO (Close)
-    1) If the id is out of range or indicates to a non-exist file, return -1
-    2) Otherwise, delete the open file and clear its open file table.
-  */ 
-  // int CloseFile(OpenFileId id) {}
-  int CloseFile(OpenFileId id)
-  {
-    if(id < 0 || id >= 20 || OpenFileTable[id] == NULL){
-      return -1;
-    }
-    else
-    {
-      DEBUG(dbgSys, "Closing Completed!\n");
-      delete OpenFileTable[id];
-      OpenFileTable[id] = NULL;
-      return 1;
-    }
+
+  int CloseFile(OpenFileId id) {
+    if (id < 0 || id >= 20 || OpenFileTable[id] == NULL) return -1;
+    int result = OpenFileTable[id]->CloseHandle();
+    delete OpenFileTable[id];
+    OpenFileTable[id] = NULL;
+    return result == 0 ? 1 : -1;
   }
 
   bool Remove(char *name) { return Unlink(name) == 0; }

@@ -25,6 +25,81 @@
 #include "ksyscall.h"
 #include "main.h"
 #include "syscall.h"
+#include <cstring>
+// User pointers refer to the active page table, never directly to mainMemory.
+// Validate the entire requested span before file I/O so a bad later page cannot
+// consume file bytes or partially overwrite a user buffer.
+static bool UserRange(unsigned int address, int size, bool writing)
+{
+    if (size < 0 || size > MemorySize) return FALSE;
+    if (size == 0) return TRUE;
+    Machine *machine = kernel->machine;
+    if (machine->pageTable == NULL || machine->pageTableSize == 0 ||
+        machine->pageTableSize > NumPhysPages) return FALSE;
+    unsigned int limit = machine->pageTableSize * PageSize;
+    if (address >= limit || (unsigned int)size > limit - address) return FALSE;
+    unsigned int last = (address + size - 1) / PageSize;
+    for (unsigned int page = address / PageSize; page <= last; page++) {
+        TranslationEntry &entry = machine->pageTable[page];
+        if (!entry.valid || entry.physicalPage < 0 || entry.physicalPage >= NumPhysPages ||
+            (writing && entry.readOnly)) return FALSE;
+    }
+    return TRUE;
+}
+
+static bool CopyUser(unsigned int address, char *buffer, int size, bool toUser)
+{
+    if (!UserRange(address, size, toUser)) return FALSE;
+    int copied = 0;
+    while (copied < size) {
+        unsigned int current = address + copied;
+        TranslationEntry &entry = kernel->machine->pageTable[current / PageSize];
+        unsigned int offset = current % PageSize;
+        int chunk = PageSize - offset;
+        if (chunk > size - copied) chunk = size - copied;
+        char *physical = &kernel->machine->mainMemory[entry.physicalPage * PageSize + offset];
+        if (toUser) {
+            memcpy(physical, buffer + copied, chunk);
+            entry.dirty = TRUE;
+        } else {
+            memcpy(buffer + copied, physical, chunk);
+        }
+        entry.use = TRUE;
+        copied += chunk;
+    }
+    return TRUE;
+}
+
+const int MaxUserString = 256; // Includes the terminating NUL.
+static bool CopyUserString(unsigned int address, char *buffer)
+{
+    for (int i = 0; i < MaxUserString; i++) {
+        if (!CopyUser(address + i, buffer + i, 1, FALSE)) return FALSE;
+        if (buffer[i] == '\0') return TRUE;
+    }
+    return FALSE;
+}
+
+static int UserFileRead(unsigned int address, int size, int id)
+{
+    if (!UserRange(address, size, TRUE)) return -1;
+    char *buffer = new char[size > 0 ? size : 1];
+    int result = SysRead(buffer, size, id);
+    if (result > size || (result > 0 && !CopyUser(address, buffer, result, TRUE))) result = -1;
+    delete [] buffer;
+    return result;
+}
+
+static int UserFileWrite(unsigned int address, int size, int id)
+{
+    if (!UserRange(address, size, FALSE)) return -1;
+    char *buffer = new char[size > 0 ? size : 1];
+    int result = CopyUser(address, buffer, size, FALSE) ? SysWrite(buffer, size, id) : -1;
+    delete [] buffer;
+    return result;
+}
+
+
 //----------------------------------------------------------------------
 // ExceptionHandler
 // 	Entry point into the Nachos kernel.  Called when a user program
@@ -80,7 +155,14 @@ void ExceptionHandler(ExceptionType which) {
           DEBUG(dbgSys, "Message received.\n");
           val = kernel->machine->ReadRegister(4);
           {
-            char *msg = &(kernel->machine->mainMemory[val]);
+            char msg[MaxUserString];
+            if (!CopyUserString((unsigned int)val, msg)) {
+              kernel->machine->WriteRegister(2, -1);
+              kernel->machine->WriteRegister(PrevPCReg, kernel->machine->ReadRegister(PCReg));
+              kernel->machine->WriteRegister(PCReg, kernel->machine->ReadRegister(PCReg) + 4);
+              kernel->machine->WriteRegister(NextPCReg, kernel->machine->ReadRegister(PCReg) + 4);
+              return;
+            }
             cout << msg << endl;
           }
           SysHalt();
@@ -89,9 +171,8 @@ void ExceptionHandler(ExceptionType which) {
         case SC_Create:
           val = kernel->machine->ReadRegister(4);
           {
-            char *filename = &(kernel->machine->mainMemory[val]);
-            // cout << filename << endl;
-            status = SysCreate(filename);
+            char filename[MaxUserString];
+            status = CopyUserString((unsigned int)val, filename) ? SysCreate(filename) : 0;
             kernel->machine->WriteRegister(2, (int)status);
           }
           kernel->machine->WriteRegister(PrevPCReg, kernel->machine->ReadRegister(PCReg));
@@ -105,9 +186,8 @@ void ExceptionHandler(ExceptionType which) {
           val = kernel->machine->ReadRegister(4);
           {
             DEBUG(dbgSys, "Open "<<kernel->machine->ReadRegister(4)<<"+"<<kernel->machine->ReadRegister(5)<< "\n");
-            char *filename = &(kernel->machine->mainMemory[val]);
-            // cout << filename << endl;
-            status = SysOpen(filename);
+            char filename[MaxUserString];
+            status = CopyUserString((unsigned int)val, filename) ? SysOpen(filename) : -1;
             kernel->machine->WriteRegister(2, (int)status);
           }
           kernel->machine->WriteRegister(PrevPCReg, kernel->machine->ReadRegister(PCReg));
@@ -121,11 +201,10 @@ void ExceptionHandler(ExceptionType which) {
           val = kernel->machine->ReadRegister(4);
           {
             DEBUG(dbgSys, "Write "<<kernel->machine->ReadRegister(4)<<"+"<<kernel->machine->ReadRegister(5)<< "\n");
-            char *buffer = &(kernel->machine->mainMemory[val]);
             size = kernel->machine->ReadRegister(5);
             id = kernel->machine->ReadRegister(6);
 
-            status = SysWrite(buffer, size, id);
+            status = UserFileWrite((unsigned int)val, size, id);
             kernel->machine->WriteRegister(2, (int) status);
           }
           kernel->machine->WriteRegister(PrevPCReg, kernel->machine->ReadRegister(PCReg));
@@ -139,11 +218,10 @@ void ExceptionHandler(ExceptionType which) {
           val = kernel->machine->ReadRegister(4);
           {
             DEBUG(dbgSys, "Read "<<kernel->machine->ReadRegister(4)<<"+"<<kernel->machine->ReadRegister(5)<< "\n");
-            char *buffer = &(kernel->machine->mainMemory[val]);
             size = kernel->machine->ReadRegister(5);
             id = kernel->machine->ReadRegister(6);
 
-            status = SysRead(buffer, size, id);
+            status = UserFileRead((unsigned int)val, size, id);
             kernel->machine->WriteRegister(2, (int) status);
           }
           kernel->machine->WriteRegister(PrevPCReg, kernel->machine->ReadRegister(PCReg));

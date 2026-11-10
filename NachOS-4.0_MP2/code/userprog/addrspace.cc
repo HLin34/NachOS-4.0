@@ -57,28 +57,55 @@ SwapHeader (NoffHeader *noffH)
 #endif
 }
 
+// Read each chunk only up to its virtual page boundary: consecutive virtual
+// pages may occupy nonconsecutive physical frames.
+static bool LoadSegment(AddrSpace *space, OpenFile *executable,
+                        const Segment &segment)
+{
+    int consumed = 0;
+    while (consumed < segment.size) {
+        unsigned int virtualAddress = segment.virtualAddr + consumed;
+        unsigned int physicalAddress;
+        if (space->Translate(virtualAddress, &physicalAddress, FALSE) != NoException)
+            return FALSE;
+        int chunk = PageSize - (virtualAddress % PageSize);
+        if (chunk > segment.size - consumed) chunk = segment.size - consumed;
+        if (executable->ReadAt(&kernel->machine->mainMemory[physicalAddress],
+                               chunk, segment.inFileAddr + consumed) != chunk)
+            return FALSE;
+        consumed += chunk;
+    }
+    return TRUE;
+}
+
+static void ReleaseFrames(TranslationEntry *table, unsigned int pages)
+{
+    for (unsigned int i = 0; i < pages; i++) {
+        kernel->frameTable[table[i].physicalPage] = FALSE;
+        kernel->NumFreeFrame++;
+    }
+    delete [] table;
+}
+
+static bool MemoryLoadFailure(OpenFile *executable)
+{
+    // Return to the loader's caller rather than terminating inside the handler:
+    // ForkExecute/ThreadRoot will finish only the failed program.
+    delete executable;
+    ExceptionHandler(MemoryLimitException);
+    return FALSE;
+}
+
 //----------------------------------------------------------------------
 // AddrSpace::AddrSpace
 // 	Create an address space to run a user program.
-//	Set up the translation from program memory to physical 
-//	memory.  For now, this is really simple (1:1), since we are
-//	only uniprogramming, and we have a single unsegmented page table
+//	Start empty; Load allocates and initializes the program page table.
 //----------------------------------------------------------------------
 
 AddrSpace::AddrSpace()
 {
-    /*pageTable = new TranslationEntry[NumPhysPages];
-    for (int i = 0; i < NumPhysPages; i++) {
-	pageTable[i].virtualPage = i;	// for now, virt page # = phys page #
-	pageTable[i].physicalPage = i;
-	pageTable[i].valid = TRUE;
-	pageTable[i].use = FALSE;
-	pageTable[i].dirty = FALSE;
-	pageTable[i].readOnly = FALSE;  
-    }
-    
-    // zero out the entire address space
-    bzero(kernel->machine->mainMemory, MemorySize); */
+    pageTable = NULL;
+    numPages = 0;
 
 }
 
@@ -89,12 +116,7 @@ AddrSpace::AddrSpace()
 
 AddrSpace::~AddrSpace()
 {
-   for(int i=0; i<numPages; i++){
-    kernel->frameTable[pageTable[i].physicalPage] = 0; //free frame
-    kernel->NumFreeFrame++;
-   }
-   DEBUG(dbgAddr, "Fre frame used by thread: "<<kernel->currentThread->getName());
-   delete []pageTable;
+    ReleaseFrames(pageTable, numPages);
 }
 
 
@@ -102,8 +124,7 @@ AddrSpace::~AddrSpace()
 // AddrSpace::Load
 // 	Load a user program into memory from a file.
 //
-//	Assumes that the page table has been initialized, and that
-//	the object code file is in NOFF format.
+//	Allocates the page table and loads the object code in NOFF format.
 //
 //	"fileName" is the file containing the object code to load into memory
 //----------------------------------------------------------------------
@@ -126,142 +147,93 @@ AddrSpace::Load(char *fileName)
     	SwapHeader(&noffH);
     ASSERT(noffH.noffMagic == NOFFMAGIC);
 
+    Segment segments[] = {
+        noffH.code, noffH.initData, noffH.uninitData,
 #ifdef RDATA
-// how big is address space?
-    size = noffH.code.size + noffH.readonlyData.size + noffH.initData.size +
-           noffH.uninitData.size + UserStackSize;	
-                                                // we need to increase the size
-						// to leave room for the stack
-#else
-// how big is address space?
-    size = noffH.code.size + noffH.initData.size + noffH.uninitData.size 
-			+ UserStackSize;	// we need to increase the size
-						// to leave room for the stack
+        noffH.readonlyData,
 #endif
-    numPages = divRoundUp(size, PageSize);
-    size = numPages * PageSize;
-
-    if( numPages>kernel->NumFreeFrame)
-        ExceptionHandler(MemoryLimitException);
-    /* ASSERT(numPages <= kernel->NumFreeFrame);		// check we're not trying
-						// to run anything too big --
-						// at least until we have
-						// virtual memory */
-    DEBUG(dbgAddr, "Initializing address space: " << numPages << ", " << size);
-
-// then, copy in the code and data segments into memory
-// Note: this code assumes that virtual address = physical address
-    pageTable = new TranslationEntry[numPages]; //for this user program
-    for( int i=0, page=0; i< numPages; i++)
-    {
-        while(page < NumPhysPages && kernel->frameTable[page]==1) page++;
-        if(page==NumPhysPages) ExceptionHandler(MemoryLimitException);
-        for(int j = 0; j < NumPhysPages; j++)
-        {
-            if(kernel->frameTable[j] == 1){
-                continue;
-            }
-            else{ 
-                 //frame can be used
-                bzero(&kernel->machine->mainMemory[j*PageSize], PageSize);
-                pageTable[i].virtualPage = i;
-                pageTable[i].physicalPage = j;
-                pageTable[i].valid = TRUE;
-                pageTable[i].use = FALSE;
-                pageTable[i].dirty = FALSE;
-                pageTable[i].readOnly = FALSE;
-                kernel -> frameTable[j] = 1;
-                kernel->NumFreeFrame--;
-                DEBUG(dbgAddr, "THREAD"<<kernel->currentThread->getName()<<" virtualPage"<<i<<"used");
-                break;
-            }
+    };
+    unsigned int imageEnd = 0;
+    for (unsigned int i = 0; i < sizeof(segments)/sizeof(segments[0]); i++) {
+        const Segment &segment = segments[i];
+        if (segment.size < 0) {
+            delete executable;
+            return FALSE;
         }
-        
+        // The legacy converter leaves metadata of absent segments unspecified.
+        if (segment.size == 0) continue;
+        // BSS has no file payload, so its file offset is also irrelevant.
+        if (segment.virtualAddr < 0 || (i != 2 && segment.inFileAddr < 0)) {
+            delete executable;
+            return FALSE;
+        }
+        // Check before addition so malformed headers cannot wrap the size.
+        if ((unsigned int)segment.virtualAddr > MemorySize ||
+            (unsigned int)segment.size > MemorySize - (unsigned int)segment.virtualAddr) {
+            return MemoryLoadFailure(executable);
+        }
+        unsigned int end = segment.virtualAddr + segment.size;
+        if (end > imageEnd) imageEnd = end;
     }
-    //int pageNumber = noffH.code.virtualAddr/PageSize;
-    //int offset = noffH.code.virtualAddr%PageSize;
-    //int physical_address = pageTable[pageNumber].physicalPage*PageSize + offset;
+    size = imageEnd + UserStackSize;
+    unsigned int requiredPages = divRoundUp(size, PageSize);
+    if (kernel->NumFreeFrame < 0 || requiredPages > (unsigned int)kernel->NumFreeFrame)
+        return MemoryLoadFailure(executable);
 
-    if (noffH.code.size > 0) {
-        DEBUG(dbgAddr, "Initializing code segment.");
-	    DEBUG(dbgAddr, noffH.code.virtualAddr << ", " << noffH.code.size);
-        /*executable->ReadAt(
-		&(kernel->machine->mainMemory[noffH.code.virtualAddr]), 
-			noffH.code.size, noffH.code.inFileAddr);*/
-        int code_page_num = divRoundUp(noffH.code.size, PageSize);  // calculate the pages that are used to store the "code segment"
-        for (int page_idx = 0; page_idx < code_page_num; page_idx++) {
-            // v_addr_temp is the virtual address of the start of a page
-            // p_addr is the physical address of the v_addr_temp
-            unsigned int v_addr_temp = noffH.code.virtualAddr + page_idx * PageSize;
-            unsigned int p_addr;
-            ExceptionType e;
-            if (NoException != (e = Translate(v_addr_temp, &p_addr, false /*should not chage executing file*/)))
-                ExceptionHandler(e);
-
-            int disk_addr = noffH.code.inFileAddr + page_idx * PageSize;  // the actuall address of the page we're loading in current iteration
-            int reading_size = (page_idx + 1 != code_page_num) ? PageSize /*not last page*/ : noffH.code.size % PageSize /*last page*/;
-
-            executable->ReadAt(
-                &(kernel->machine->mainMemory[p_addr]),
-                reading_size, disk_addr);
+    // numPages records committed mappings, including on an interrupted allocation.
+    numPages = 0;
+    pageTable = new TranslationEntry[requiredPages];
+    int frame = 0;
+    for (unsigned int page = 0; page < requiredPages; page++) {
+        while (frame < NumPhysPages && kernel->frameTable[frame]) frame++;
+        if (frame == NumPhysPages) {
+            ReleaseFrames(pageTable, numPages);
+            pageTable = NULL;
+            numPages = 0;
+            return MemoryLoadFailure(executable);
         }
-    }
-    if (noffH.initData.size > 0) {
-        DEBUG(dbgAddr, "Initializing data segment.");
-	    DEBUG(dbgAddr, noffH.initData.virtualAddr << ", " << noffH.initData.size);
-        /*executable->ReadAt(
-		&(kernel->machine->mainMemory[noffH.initData.virtualAddr]),
-			noffH.initData.size, noffH.initData.inFileAddr);*/
-        unsigned int v_addr_temp = noffH.initData.virtualAddr;
-        unsigned int v_end_addr = noffH.initData.virtualAddr + noffH.initData.size;
-        // v_addr_temp is the virtual address of the start of a page
-        // v_addr_end is the virtual address of the end of a page
-        // Initialize with the begginging of initData
-        while (v_addr_temp < v_end_addr) {
-            // p_addr is the physical address of the v_addr_temp
-            unsigned int p_addr;
-            ExceptionType e;
-            if (NoException != (e = Translate(v_addr_temp, &p_addr, false /*should not change executing file*/)))
-                ExceptionHandler(e);
-
-            // disk_addr is the actuall address of the page we're loading in current iteration
-            int disk_addr = noffH.initData.inFileAddr;  // we assume that v_addr_temp is following the code_segement
-
-            int v_page_num = (v_addr_temp / PageSize) + 1;  // The number(not index) of virtual page that the current address are store in
-            int reading_size = (v_page_num * PageSize < v_end_addr) ? v_page_num * PageSize - v_addr_temp : /*the last page*/ v_end_addr - v_addr_temp;
-            executable->ReadAt(
-                &(kernel->machine->mainMemory[p_addr]),
-                reading_size, disk_addr);
-
-            v_addr_temp += reading_size;
-        }
+        bzero(&kernel->machine->mainMemory[frame * PageSize], PageSize);
+        pageTable[page].virtualPage = page;
+        pageTable[page].physicalPage = frame;
+        pageTable[page].valid = TRUE;
+        pageTable[page].use = FALSE;
+        pageTable[page].dirty = FALSE;
+        pageTable[page].readOnly = FALSE;
+        kernel->frameTable[frame] = TRUE;
+        kernel->NumFreeFrame--;
+        numPages++;
+        frame++;
     }
 
+    bool loaded = LoadSegment(this, executable, noffH.code) &&
+                  LoadSegment(this, executable, noffH.initData);
 #ifdef RDATA
+    loaded = loaded && LoadSegment(this, executable, noffH.readonlyData);
+#endif
+    if (!loaded) {
+        ReleaseFrames(pageTable, numPages);
+        pageTable = NULL;
+        numPages = 0;
+        delete executable;
+        return FALSE;
+    }
+#ifdef RDATA
+    // Protection is page-granular. A page shared with writable data/BSS/stack
+    // must stay writable even if it also contains read-only bytes.
     if (noffH.readonlyData.size > 0) {
-        DEBUG(dbgAddr, "Initializing read only data segment.");
-	    DEBUG(dbgAddr, noffH.readonlyData.virtualAddr << ", " << noffH.readonlyData.size);
-        
-        int total, curOffset = 0;
-        for(total = noffH.readonlyData.size, curOffset = 0; total > 0; total-=PageSize, curOffset +=PageSize){
-            unsigned int p = divRoundUp(noffH.readonlyData.size, PageSize);
-            for(int i=0; i<p; i++){
-                pageTable[noffH.readonlyData.virtualAddr/PageSize + i].readOnly = TRUE;
+        unsigned int roStart = noffH.readonlyData.virtualAddr;
+        unsigned int roEnd = roStart + noffH.readonlyData.size;
+        unsigned int stackStart = numPages * PageSize - UserStackSize;
+        for (unsigned int page = 0; page < numPages; page++) {
+            unsigned int start = page * PageSize;
+            unsigned int end = start + PageSize;
+            bool writable = end > stackStart;
+            Segment data[] = { noffH.initData, noffH.uninitData };
+            for (unsigned int i = 0; i < 2; i++) {
+                if (data[i].size > 0 && start < (unsigned int)(data[i].virtualAddr + data[i].size)
+                    && end > (unsigned int)data[i].virtualAddr) writable = TRUE;
             }
-
-            unsigned int loadSize;
-            if(total < PageSize) loadSize = total;
-            else loadSize = PageSize;
-
-            unsigned int p_addr;
-            ExceptionType e;
-            if(NoException != (e = Translate(noffH.readonlyData.virtualAddr, &p_addr, false)))
-                ExceptionHandler(e);
-            
-            executable->ReadAt(
-		    &(kernel->machine->mainMemory[p_addr]),
-			loadSize, noffH.readonlyData.inFileAddr + curOffset);
-
+            pageTable[page].readOnly = start < roEnd && end > roStart && !writable;
         }
     }
 #endif

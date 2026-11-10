@@ -175,6 +175,13 @@ Thread::Finish ()
     ASSERT(this == kernel->currentThread);
     
     DEBUG(dbgThread, "Finishing thread: " << name);
+    if (space != NULL) {
+        // The address space is not this thread's execution stack. Release it
+        // now so the last user program also returns its physical frames.
+        delete space;
+        space = NULL;
+        kernel->UserProgramFinished();
+    }
     Sleep(TRUE);				// invokes SWITCH
     // not reached
 }

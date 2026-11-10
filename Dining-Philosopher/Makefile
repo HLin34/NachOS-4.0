@@ -1,14 +1,15 @@
-CXX = g++
-CXXFLAGS =  -pthread 
-EXES     := main
+CXX ?= g++
+CPPFLAGS ?=
+CXXFLAGS ?= -std=c++11 -Wall -Wextra -pthread
+LDLIBS += -pthread
+SOURCES = main.cpp fork.cpp table.cpp philosopher.cpp
+HEADERS = config.hpp fork.hpp table.hpp philosopher.hpp
 
-.PHONY: all 
-all: $(EXES)
+.PHONY: all clean
+all: main
 
-.PHONY: clean
+main: $(SOURCES) $(HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) -o $@ $(SOURCES) $(LDLIBS)
+
 clean:
-	rm -f $(EXES)
-
-.PHONY: main 
-main: main.cpp fork.cpp table.cpp philosopher.cpp 
-	g++ $(CXXFLAGS) -o $@ $?
+	rm -f main
