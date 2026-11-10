@@ -37,6 +37,7 @@
 #include "debug.h"  //just for test!!!
 #include "openfile.h"
 #include "sysdep.h"
+#include <new>
 
 #ifdef FILESYS_STUB  // Temporarily implement file system calls as
                      // calls to UNIX, until the real file system
@@ -49,52 +50,59 @@ class FileSystem {
     for (int i = 0; i < 20; i++) OpenFileTable[i] = NULL;
   }
 
-  bool Create(char *name) {
-    int fileDescriptor = OpenForWrite(name);
-
-    if (fileDescriptor == -1) return FALSE;
-    Close(fileDescriptor);
-    return TRUE;
-  }
-  // The OpenFile function is used for open user program  [userprog/addrspace.cc]
-  OpenFile *Open(char *name) {
-    int fileDescriptor = OpenForReadWrite(name, FALSE);
-    if (fileDescriptor == -1) return NULL;
-    return new OpenFile(fileDescriptor);
-  }
-
-  //  The OpenAFile function is used for kernel open system call
-  OpenFileId OpenAFile(char *name) {
-    int fileDescriptor = OpenForReadWrite(name, FALSE);
-    if (fileDescriptor < 0) return -1;
-    int id = -1;
+  ~FileSystem() {
     for (int i = 0; i < 20; i++) {
-      if (OpenFileTable[i] == NULL) {
-        OpenFileTable[i] = new OpenFile(fileDescriptor);
-        id = i;
-        break;
+      delete OpenFileTable[i];
+      OpenFileTable[i] = NULL;
+    }
+  }
+
+  bool Create(char *name) {
+    int fd = TryOpenForWrite(name);
+    if (fd < 0) return FALSE;
+    return TryCloseFile(fd) == 0;
+  }
+
+  // Executable loading owns the returned object independently of the user table.
+  OpenFile *Open(char *name) {
+    if (name == NULL || name[0] == '\0') return NULL;
+    int fd = OpenForReadWrite(name, FALSE);
+    if (fd < 0) return NULL;
+    OpenFile *file = new (std::nothrow) OpenFile(fd);
+    if (file == NULL) TryCloseFile(fd);
+    return file;
+  }
+
+  OpenFileId OpenAFile(char *name) {
+    if (name == NULL || name[0] == '\0') return -1;
+    // Reject a full table before acquiring a host descriptor.
+    for (int id = 0; id < 20; id++) {
+      if (OpenFileTable[id] == NULL) {
+        OpenFile *file = Open(name);
+        if (file == NULL) return -1;
+        OpenFileTable[id] = file;
+        return id;
       }
     }
-    return id;
+    return -1;
   }
 
   int WriteFile(char *buffer, int size, OpenFileId id) {
     if (id < 0 || id >= 20 || OpenFileTable[id] == NULL) return -1;
-    int ret = OpenFileTable[id]->Write(buffer, size);
-    return (ret < 0) ? -1 : ret;
+    return OpenFileTable[id]->Write(buffer, size);
   }
 
   int ReadFile(char *buffer, int size, OpenFileId id) {
     if (id < 0 || id >= 20 || OpenFileTable[id] == NULL) return -1;
-    int ret = OpenFileTable[id]->Read(buffer, size);
-    return (ret < 0) ? -1 : ret;
+    return OpenFileTable[id]->Read(buffer, size);
   }
 
   int CloseFile(OpenFileId id) {
     if (id < 0 || id >= 20 || OpenFileTable[id] == NULL) return -1;
+    int result = OpenFileTable[id]->CloseHandle();
     delete OpenFileTable[id];
     OpenFileTable[id] = NULL;
-    return 1;
+    return result == 0 ? 1 : -1;
   }
 
   bool Remove(char *name) { return Unlink(name) == 0; }

@@ -29,32 +29,34 @@
 					// See definitions listed under #else
 class OpenFile {
   public:
-    OpenFile(int f) { file = f; currentOffset = 0; }	// open the file
-    ~OpenFile() { Close(file); }			// close the file
+    OpenFile(int f) { file = f; currentOffset = 0; }
+    ~OpenFile() { if (file >= 0) CloseHandle(); }
 
-    int ReadAt(char *into, int numBytes, int position) { 
-    		Lseek(file, position, 0); 
-		return ReadPartial(file, into, numBytes); 
-		}	
-    int WriteAt(char *from, int numBytes, int position) { 
-    		Lseek(file, position, 0); 
-		WriteFile(file, from, numBytes); 
-		return numBytes;
-		}	
+    int CloseHandle() {
+        if (file < 0) return -1;
+        int fd = file;
+        file = -1; // Never close a consumed descriptor a second time.
+        return TryCloseFile(fd);
+    }
+
+    int ReadAt(char *into, int numBytes, int position) {
+        return TryReadAt(file, into, numBytes, position);
+    }
+    int WriteAt(char *from, int numBytes, int position) {
+        return TryWriteAt(file, from, numBytes, position);
+    }
     int Read(char *into, int numBytes) {
-		int numRead = ReadAt(into, numBytes, currentOffset); 
-		currentOffset += numRead;
-		return numRead;
-    		}
+        int count = ReadAt(into, numBytes, currentOffset);
+        if (count > 0) currentOffset += count;
+        return count;
+    }
     int Write(char *from, int numBytes) {
-		int numWritten = WriteAt(from, numBytes, currentOffset); 
-		currentOffset += numWritten;
-		return numWritten;
-		}
+        int count = WriteAt(from, numBytes, currentOffset);
+        if (count > 0) currentOffset += count;
+        return count;
+    }
+    int Length() { return TryFileLength(file); }
 
-    int Length() { Lseek(file, 0, 2); return Tell(file); }
-    
-  
   private:
     int file;
     int currentOffset;

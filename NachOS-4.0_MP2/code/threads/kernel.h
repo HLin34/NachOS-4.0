@@ -38,6 +38,7 @@ class Kernel {
 				// refers to "kernel" as a global
     void ExecAll();
     int Exec(char* name);
+    void UserProgramFinished(); // called with interrupts off after address-space cleanup
     void ThreadSelfTest();	// self test of threads and synchronization
 	
     void ConsoleTest();         // interactive console self test
@@ -71,7 +72,7 @@ class Kernel {
 
     int hostName;               // machine identifier
      
-    bool frameTable[128];  //MP2 use to record whether the frame has already been allocated
+    bool frameTable[NumPhysPages];  //MP2 use to record whether the frame has already been allocated
                            // if yes, it can't be aloocated again.
     int NumFreeFrame;      //MP2 use to record how many physical frame left we can use.
 
@@ -81,6 +82,8 @@ class Kernel {
 	char*   execfile[10];
 	int execfileNum;
 	int threadNum;
+    int activeUserPrograms;
+    bool launchingUserPrograms;
     bool randomSlice;		// enable pseudo-random time slicing
     bool debugUserProg;         // single step user program
     double reliability;         // likelihood messages are dropped

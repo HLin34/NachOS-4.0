@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+# Local verification outputs; original tracked artifacts remain in history.
+/audit-output/

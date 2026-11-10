@@ -1,45 +1,41 @@
 #include "philosopher.hpp"
+#include <cstdio>
+#include <cstdlib>
+#include <exception>
+#include <memory>
+#include <vector>
 
-#include <stdlib.h>
-#include <unistd.h>
-
-int main(int argc, char** argv) {
-    // TODO: create forks, table, and philosophers. The number of forks and philosophers are defined in the config.hpp
-    Fork *f[PHILOSOPHERS];
-    for (int i = 0; i < PHILOSOPHERS; i++) {
-        f[i] = new Fork();
+int main() {
+    std::vector<std::unique_ptr<Fork> > forks;
+    std::unique_ptr<Table> table;
+    std::vector<std::unique_ptr<Philosopher> > philosophers;
+    size_t started = 0;
+    int result = EXIT_SUCCESS;
+    try {
+        for (int i = 0; i < PHILOSOPHERS; i++) forks.emplace_back(new Fork);
+        table.reset(new Table(PHILOSOPHERS));
+        for (int i = 0; i < PHILOSOPHERS; i++)
+            philosophers.emplace_back(new Philosopher(i, forks[i].get(), forks[(i + 1) % PHILOSOPHERS].get(), table.get()));
+        for (; started < philosophers.size(); started++) philosophers[started]->start();
+        sleep(RUNTIME);
+    } catch (const std::exception &error) {
+        fprintf(stderr, "Unable to run all philosophers: %s\n", error.what());
+        result = EXIT_FAILURE;
     }
-    Table *table = new Table(PHILOSOPHERS);
-
-    Philosopher* philosophers[PHILOSOPHERS];
-    for (int i = 0; i < PHILOSOPHERS; i++) {
-        philosophers[i] = new Philosopher(i, f[i], f[(i + 1) % PHILOSOPHERS], table);
+    for (size_t i = 0; i < started; i++) {
+        int status = philosophers[i]->cancel();
+        if (status != 0) {
+            fprintf(stderr, "Cancellation request failed: %d\n", status);
+            std::_Exit(EXIT_FAILURE); // Never destroy objects while workers may still run.
+        }
     }
-
-    // TODO: start running philosopher threads
-    for (int i = 0; i < PHILOSOPHERS; i++) {
-        philosophers[i]->start();
+    for (size_t i = 0; i < started; i++) {
+        int status = philosophers[i]->join();
+        if (status != 0) {
+            fprintf(stderr, "Join failed: %d\n", status);
+            std::_Exit(EXIT_FAILURE);
+        }
     }
-
-    sleep(RUNTIME);
-
-    // TODO: cancel philosopher threads 
-    for (int i = 0; i < PHILOSOPHERS; i++) {
-        philosophers[i]->cancel();
-    }
-    printf("All philosophers have been cancelled.\n");
-
-    // TODO: join philosopher threads (i.e. wait for them to finish) 
-    for (int i = 0; i < PHILOSOPHERS; i++) {
-        philosophers[i]->join();
-    }
-
-    // TODO: delete forks, table, and philosophers
-    for (int i = 0; i < PHILOSOPHERS; i++) {
-        delete philosophers[i];
-        delete f[i];
-    }
-    delete table;
-    
-    return 0;
+    puts("All philosophers have stopped.");
+    return result; // Shared resources are destroyed only after successful joins.
 }

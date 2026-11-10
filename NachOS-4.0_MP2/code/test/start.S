@@ -66,10 +66,38 @@ MSG:
 	j	$31
 	.end MSG
 
-/* TODO (Open): Add SC_Open system call stubs, you can imitate existing system calls. */
-/* TODO (Write): Add SC_Write system call stubs, you can imitate existing system calls. */
-/* TODO (Read): Add SC_Read system call stubs, you can imitate existing system calls. */
-/* TODO (Close): Add SC_Close system call stubs, you can imitate existing system calls. */
+	.globl Open
+	.ent Open
+Open:
+	addiu $2,$0,SC_Open
+	syscall
+	j $31
+	.end Open
+
+	.globl Write
+	.ent Write
+Write:
+	addiu $2,$0,SC_Write
+	syscall
+	j $31
+	.end Write
+
+	.globl Read
+	.ent Read
+Read:
+	addiu $2,$0,SC_Read
+	syscall
+	j $31
+	.end Read
+
+	.globl Close
+	.ent Close
+Close:
+	addiu $2,$0,SC_Close
+	syscall
+	j $31
+	.end Close
+
 
 	.globl Add
 	.ent	Add

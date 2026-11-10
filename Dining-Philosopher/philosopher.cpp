@@ -1,109 +1,91 @@
 #include "philosopher.hpp"
+#include <system_error>
 
+static_assert(PHILOSOPHERS >= 2, "at least two philosophers are required");
+static_assert(MINTHINKTIME >= 0 && MAXTHINKTIME >= MINTHINKTIME, "invalid thinking interval");
+static_assert(EATTIME >= 0 && RUNTIME >= 0, "invalid runtime");
 
-Philosopher::Philosopher(int id, Fork *leftFork, Fork *rightFork, Table *table) :id(id), cancelled(false), leftFork(leftFork), rightFork(rightFork), table(table) {
-    srand((unsigned) time(&t1));
+namespace {
+struct Meal {
+    Fork *left;
+    Fork *right;
+    Table *table;
+    int id;
+    bool seated;
+    bool forksHeld;
+};
+void ReleaseFork(void *arg) { static_cast<Fork*>(arg)->signal(); }
+void ReleaseMeal(void *arg) {
+    Meal *meal = static_cast<Meal*>(arg);
+    if (meal->forksHeld) {
+        meal->left->signal();
+        meal->right->signal();
+    }
+    if (meal->seated) meal->table->signal(meal->id);
+}
 }
 
+Philosopher::Philosopher(int id, Fork *leftFork, Fork *rightFork, Table *table)
+    : id(id), cancelled(false), leftFork(leftFork), rightFork(rightFork), table(table) {
+    // Reuse existing per-object storage for a worker-owned RNG state.
+    t1 = static_cast<unsigned int>(time(NULL)) ^ (static_cast<unsigned int>(id + 1) * 2654435761U);
+}
 void Philosopher::start() {
-    // TODO: start a philosopher thread
-    pthread_create(&t, NULL, &Philosopher::run, this);      // Create a new thread, starting with execution of START-ROUTINE
-                                                            // getting passed ARG. Creation attributed come from ATTR. The new
-                                                            // handle is stored in *NEWTHREAD.
+    int status = pthread_create(&t, NULL, &Philosopher::run, this);
+    if (status != 0) throw std::system_error(status, std::generic_category(), "philosopher start");
 }
-
-int Philosopher::join() {
-    // TODO: join a philosopher thread
-    return pthread_join(t, NULL);                           // Make calling thread wait for termination of the thread TH. The
-                                                            // exit status of the thread is stored in *THREAD_RETURN, if THREAD_RETURN
-                                                            // is not NULL.
-}
-
+int Philosopher::join() { return pthread_join(t, NULL); }
 int Philosopher::cancel() {
-    // TODO: cancel a philosopher thread
-    cancelled = true;
-    return pthread_cancel(t);                               // Cancel THREAD immediately or at the next possibility
+    // A deferred cancellation request is the stop mechanism; no shared bool.
+    return pthread_cancel(t);
 }
-
 void Philosopher::think() {
-    int thinkTime = rand() % MAXTHINKTIME + MINTHINKTIME;
+    unsigned int state = static_cast<unsigned int>(t1);
+    int thinkTime = rand_r(&state) % (MAXTHINKTIME - MINTHINKTIME + 1) + MINTHINKTIME;
+    t1 = state;
     sleep(thinkTime);
     printf("Philosopher %d is thinking for %d seconds.\n", id, thinkTime);
 }
-
 void Philosopher::eat() {
     printf("Philosopher %d is eating.\n", id);
     sleep(EATTIME);
 }
-
 void Philosopher::pickup(int id) {
-    // TODO: implement the pickup interface, the philosopher needs to pick up the left fork first, then the right fork
-    //printf("Philosopher %d is trying to pick up forks.\n", id);
-
+    (void)id;
     leftFork->wait();
-    //printf("Philosopher %d picked up left fork.\n", id);
+    // If cancellation occurs waiting for the right fork, return the left one.
+    pthread_cleanup_push(ReleaseFork, leftFork);
     rightFork->wait();
-    //printf("Philosopher %d picked up right fork.\n", id);
-    printf("Philosopher %d picked up both left and right fork.\n", id );
-    //table->updateCurrentTurn();                       // Starvation
+    pthread_cleanup_pop(0);
 }
-
 void Philosopher::putdown(int id) {
-    // TODO: implement the putdown interface, the philosopher needs to put down the left fork first, then the right fork
+    (void)id;
     leftFork->signal();
-    //printf("Philosopher %d put down left fork.\n", id );
     rightFork->signal();
-    //printf("Philosopher %d put down right fork.\n", id );
-    printf("Philosopher %d put down both left and right fork.\n", id );
 }
+void Philosopher::enter() { table->wait(id); }
+void Philosopher::leave() { table->signal(id); }
 
-void Philosopher::enter() {
-    // TODO: implement the enter interface, the philosopher needs to join the table first
-    table->wait();
-    printf("Philosopher %d enter the table.\n", id);
-}
-
-void Philosopher::leave() {
-    // TODO: implement the leave interface, the philosopher needs to let the table know that he has left
-    table->signal();
-    printf("Philosopher %d leave the table.\n", id);
-}
-
-void* Philosopher::run(void* arg) {
-    // TODO: complete the philosopher thread routine. 
-    Philosopher* p = static_cast<Philosopher*>(arg);
-    pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);   // Set cancellation state of current thread to TYPE, returning the old
-                                                            // type in *OLDTYPE if OLDTYPE is not NULL.
-
-    while (!p->cancelled) {
+void *Philosopher::run(void *arg) {
+    Philosopher *p = static_cast<Philosopher*>(arg);
+    pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
+    for (;;) {
+        pthread_testcancel();
         p->think();
-        pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL);
-        
+        Meal meal = {p->leftFork, p->rightFork, p->table, p->id, false, false};
+        pthread_cleanup_push(ReleaseMeal, &meal);
         p->enter();
-        printf("Now is %d's turn.\n", p->table->getCurrentTurn());
-
-        if (p->table->getCurrentTurn() == p->id || ((p->table->getCurrentTurn()+1)%5 != p->id  && (p->table->getCurrentTurn()-1)%5 != p->id)) {
-            //printf("Now is %d's turn.\n", p->table->getCurrentTurn());
-            p->pickup(p->id); // Attempt to pick up forks if it's the philosopher's turn
-
-            p->eat();
-
-            p->putdown(p->id); // Put down forks
-            
-        }
-        //p->table->wait();          // Starvation
-        /*p->pickup(p->id);
+        meal.seated = true;
+        // Table has already reserved both forks for this request.
+        p->pickup(p->id);
+        meal.forksHeld = true;
         p->eat();
-        p->putdown(p->id);*/
-        //p->table->signal();         // Starvation
-        //p->table->updateCurrentTurn();
+        p->putdown(p->id);
+        meal.forksHeld = false;
         p->leave();
-
+        meal.seated = false;
         p->table->updateCurrentTurn();
-
-        pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+        pthread_cleanup_pop(0);
     }
-    
-
     return NULL;
 }

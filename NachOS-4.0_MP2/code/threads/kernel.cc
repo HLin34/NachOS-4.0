@@ -26,6 +26,10 @@
 
 Kernel::Kernel(int argc, char **argv)
 {
+    execfileNum = 0;
+    threadNum = 0;
+    activeUserPrograms = 0;
+    launchingUserPrograms = FALSE;
     randomSlice = FALSE; 
     debugUserProg = FALSE;
     consoleIn = NULL;          // default is stdin
@@ -93,7 +97,9 @@ Kernel::Initialize()
     // We didn't explicitly allocate the current thread we are running in.
     // But if it ever tries to give up the CPU, we better have a Thread
     // object to save its state. 
-    frameTable[128] = {0};  //MP2
+    for (int frame = 0; frame < NumPhysPages; frame++) {
+        frameTable[frame] = FALSE;
+    }
     NumFreeFrame = NumPhysPages;  //MP2
 	
     currentThread = new Thread("main", threadNum++);		
@@ -252,18 +258,35 @@ Kernel::NetworkTest() {
 void ForkExecute(Thread *t)
 {
 	if ( !t->space->Load(t->getName()) ) {
-    	return;             // executable not found
+        return; // ThreadRoot finishes the failed load and releases its AddrSpace.
     }
 	
     t->space->Execute(t->getName());
 
 }
 
+void Kernel::UserProgramFinished()
+{
+    ASSERT(interrupt->getLevel() == IntOff);
+    ASSERT(activeUserPrograms > 0);
+    activeUserPrograms--;
+    // Console/network polling and the periodic timer can outlive the batch.
+    if (!launchingUserPrograms && activeUserPrograms == 0) {
+        interrupt->Halt();
+    }
+}
+
 void Kernel::ExecAll()
 {
+	launchingUserPrograms = TRUE;
 	for (int i=1;i<=execfileNum;i++) {
 		int a = Exec(execfile[i]);
 	}
+    launchingUserPrograms = FALSE;
+    // A child can finish while later batch entries are still being launched.
+    if (execfileNum > 0 && activeUserPrograms == 0) {
+        interrupt->Halt();
+    }
 	currentThread->Finish();
     //Kernel::Exec();	
 }
@@ -271,12 +294,14 @@ void Kernel::ExecAll()
 
 int Kernel::Exec(char* name)
 {
-	t[threadNum] = new Thread(name, threadNum);
-	t[threadNum]->space = new AddrSpace();
-	t[threadNum]->Fork((VoidFunctionPtr) &ForkExecute, (void *)t[threadNum]);
-	threadNum++;
+    int id = threadNum++;
+	t[id] = new Thread(name, id);
+	t[id]->space = new AddrSpace();
+    // Register before Fork, which can enable interrupts and run the child.
+    activeUserPrograms++;
+	t[id]->Fork((VoidFunctionPtr) &ForkExecute, (void *)t[id]);
 
-	return threadNum-1;
+	return id;
 /*
     cout << "Total threads number is " << execfileNum << endl;
     for (int n=1;n<=execfileNum;n++) {
