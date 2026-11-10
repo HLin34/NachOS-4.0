@@ -1,0 +1,107 @@
+{
+  "baseline": "57e8e4e99d06b5ff2a268524887d22a3932d611a",
+  "changed_original_files": [
+    "code/build.linux/Makefile.dep",
+    "code/lib/list.cc",
+    "code/threads/alarm.cc",
+    "code/threads/scheduler.cc",
+    "code/threads/thread.cc"
+  ],
+  "source_files": 4,
+  "dependency_file": 1,
+  "original_snapshot_unchanged": true,
+  "previous_maintenance_unchanged": true,
+  "scheduling_semantics_preserved": true,
+  "fresh_host_build": "passed without -fpermissive",
+  "mips_targets_built": 3,
+  "runtime_observations": [
+    {
+      "case": "single_no_trace",
+      "returncode": 124,
+      "returns": [
+        3
+      ],
+      "halted": false,
+      "assertion": false,
+      "trace_events": {
+        "A": 0,
+        "B": 0,
+        "C": 0,
+        "D": 0,
+        "E": 0
+      }
+    },
+    {
+      "case": "single_trace",
+      "returncode": 124,
+      "returns": [
+        3
+      ],
+      "halted": false,
+      "assertion": false,
+      "trace_events": {
+        "A": 1,
+        "B": 1,
+        "C": 0,
+        "D": 0,
+        "E": 0
+      }
+    },
+    {
+      "case": "pair",
+      "returncode": 124,
+      "returns": [
+        2,
+        1
+      ],
+      "halted": false,
+      "assertion": false,
+      "trace_events": {
+        "A": 0,
+        "B": 0,
+        "C": 0,
+        "D": 0,
+        "E": 0
+      },
+      "hw3t1_first_observed": false
+    },
+    {
+      "case": "pair_reverse",
+      "returncode": 124,
+      "returns": [
+        2,
+        1
+      ],
+      "halted": false,
+      "assertion": false,
+      "trace_events": {
+        "A": 0,
+        "B": 0,
+        "C": 0,
+        "D": 0,
+        "E": 0
+      },
+      "hw3t1_first_observed": false
+    },
+    {
+      "case": "pair_trace",
+      "returncode": 124,
+      "returns": [
+        2,
+        1
+      ],
+      "halted": false,
+      "assertion": false,
+      "trace_events": {
+        "A": 4897,
+        "B": 4897,
+        "C": 2,
+        "D": 4,
+        "E": 4891
+      },
+      "hw3t1_first_observed": false
+    }
+  ],
+  "warnings_remain": true,
+  "github_modified": false
+}

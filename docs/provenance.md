@@ -31,3 +31,7 @@ The subsequent [FIFO fairness repair](mp4-fairness-fix.md) revises MP4 table.cpp
 ## Maintenance publication
 
 The publication contains the twenty-one previously verified source changes plus documentation and regression tooling. It preserves the historical directory layout, all tracked binaries/PDFs, existing notices and the exact MP3 gitlink. A new branch and pull request carry the update; no default-branch history rewrite, visibility change, new license or regenerated archival material is part of this publication. Machine-specific backup paths and historical evidence references describe local archival context, not files required in a fresh clone. See [the published verification summary](verification-summary.md) for portable result records and source hashes.
+
+## MP3 recovery and integration
+
+The earlier missing-target findings above describe the first maintenance publication. A user-supplied backup subsequently recovered the exact MP3 target and its complete nested history. Both the original recovered repository and the maintained working tree have verified local backups. MP3 is imported as ordinary text source, tests and repair documents; the old gitlink remains visible in earlier main history. Newly imported PDFs, nested metadata, duplicate compiler packages and generated binaries are excluded. Existing MP1/MP2/MP4 blobs remain intact. See [current recovery status](mp3-status.md).

@@ -1,0 +1,285 @@
+{
+  "baseline": "57e8e4e99d06b5ff2a268524887d22a3932d611a",
+  "changed_original_files": [
+    "code/build.linux/Makefile.dep",
+    "code/lib/list.cc",
+    "code/threads/alarm.cc",
+    "code/threads/scheduler.cc",
+    "code/threads/scheduler.h",
+    "code/threads/thread.cc",
+    "code/threads/thread.h"
+  ],
+  "source_sha256_lf": {
+    "code/build.linux/Makefile.dep": "263cb1483d88426394f2b81e86cf82eadd38cd4cadcf6a2b9825af09dd8d96c0",
+    "code/lib/list.cc": "9251f9ba8fa3b5c77732fe4dc7ae47a3259fbf5c2de189cbe6ab82dc9326bbea",
+    "code/threads/alarm.cc": "65d8aa4e4173e833decdd799cf6c28aacc8d1b9337e4ce225c06752376989ec7",
+    "code/threads/scheduler.cc": "b87cd5aec2b6c300ef08a974461669c7482d833423461bad82b8c5b9acc2ccf3",
+    "code/threads/scheduler.h": "de6bde26bb985ebff25f4970b88911651407040d280eff48637a9ccda89a7dd2",
+    "code/threads/thread.cc": "923e6bbae020257021a03f906cc0969445c150e579f9356cdb58af36c0c08ba1",
+    "code/threads/thread.h": "8b7684361220abf6e9deca021cb9d4859b3c59f9d460e8351b95c677b80a4c25"
+  },
+  "original_291_files_and_zip_unchanged": true,
+  "prior_21_maintenance_sources_unchanged": true,
+  "earlier_list_and_dependency_repairs_unchanged": true,
+  "host_build_passed_without_permissive": true,
+  "mips_targets_built": 3,
+  "focused_cases": [
+    {
+      "case": "initial",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "first_burst",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "last_slice",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "zero_burst",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "kernel_and_no_double_count",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "ready_time_excluded",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "clamped_fifo",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "live_remaining",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "shorter_timer",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "longer_timer",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "equal_timer",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "zero_timer",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "empty_timer",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "idle_timer",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "timer_recheck",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "wake_defers",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "voluntary_yield",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "settle_before_insert",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "multiple_preemptions",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "negative_remaining_timer",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "case": "fractional_estimate",
+      "passed": true,
+      "returncode": 0
+    }
+  ],
+  "runtime_observations": [
+    {
+      "case": "single_no_trace",
+      "returncode": 124,
+      "returns": [
+        3
+      ],
+      "halted": false,
+      "assertion": false,
+      "trace_events": {
+        "A": 0,
+        "B": 0,
+        "C": 0,
+        "D": 0,
+        "E": 0
+      }
+    },
+    {
+      "case": "single_trace",
+      "returncode": 124,
+      "returns": [
+        3
+      ],
+      "halted": false,
+      "assertion": false,
+      "trace_events": {
+        "A": 1,
+        "B": 1,
+        "C": 0,
+        "D": 0,
+        "E": 0
+      }
+    },
+    {
+      "case": "pair",
+      "returncode": 124,
+      "returns": [
+        1,
+        2
+      ],
+      "halted": false,
+      "assertion": false,
+      "trace_events": {
+        "A": 0,
+        "B": 0,
+        "C": 0,
+        "D": 0,
+        "E": 0
+      },
+      "hw3t1_first_observed": true
+    },
+    {
+      "case": "pair_reverse",
+      "returncode": 124,
+      "returns": [
+        1,
+        2
+      ],
+      "halted": false,
+      "assertion": false,
+      "trace_events": {
+        "A": 0,
+        "B": 0,
+        "C": 0,
+        "D": 0,
+        "E": 0
+      },
+      "hw3t1_first_observed": true
+    },
+    {
+      "case": "pair_trace",
+      "returncode": 124,
+      "returns": [
+        1,
+        2
+      ],
+      "halted": false,
+      "assertion": false,
+      "trace_events": {
+        "A": 7,
+        "B": 7,
+        "C": 5,
+        "D": 5,
+        "E": 0
+      },
+      "hw3t1_first_observed": true
+    },
+    {
+      "case": "pair_reverse_trace",
+      "returncode": 124,
+      "returns": [
+        1,
+        2
+      ],
+      "halted": false,
+      "assertion": false,
+      "trace_events": {
+        "A": 10,
+        "B": 10,
+        "C": 5,
+        "D": 5,
+        "E": 3
+      },
+      "hw3t1_first_observed": true
+    }
+  ],
+  "integration_checks": [
+    {
+      "case": "single_no_trace",
+      "scheduling_passed": true,
+      "shutdown_completed": false
+    },
+    {
+      "case": "single_trace",
+      "scheduling_passed": true,
+      "shutdown_completed": false
+    },
+    {
+      "case": "pair",
+      "scheduling_passed": true,
+      "shutdown_completed": false
+    },
+    {
+      "case": "pair_reverse",
+      "scheduling_passed": true,
+      "shutdown_completed": false
+    },
+    {
+      "case": "pair_trace",
+      "scheduling_passed": true,
+      "shutdown_completed": false
+    },
+    {
+      "case": "pair_reverse_trace",
+      "scheduling_passed": true,
+      "shutdown_completed": false
+    },
+    {
+      "case": "pair_trace_accounting",
+      "passed": true,
+      "estimate_updates_checked": 5,
+      "strictly_shorter_preemptions_checked": 0
+    },
+    {
+      "case": "pair_reverse_trace_accounting",
+      "passed": true,
+      "estimate_updates_checked": 5,
+      "strictly_shorter_preemptions_checked": 3
+    }
+  ],
+  "warnings_remain": true,
+  "github_modified": false
+}

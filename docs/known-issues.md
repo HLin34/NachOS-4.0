@@ -58,3 +58,7 @@ MP4-01 and MP4-03 are repaired locally. All 24 Linux functional cases and two sc
 ## Local MP4 fairness repair
 
 MP4-02 is now addressed by FIFO two-fork reservations: no later request bypasses an enqueued request. Progress requires eventual scheduling and finite resource holding; there is no wall-clock bound. Thirteen new functional cases, eight scoped fairness TSan cases, 24 lifecycle regressions and two complete-worker scoped TSan cases pass. Table now requires id-aware wait/signal calls. MP4-04 course header compatibility remains open. See [policy, proof, API change and evidence](mp4-fairness-fix.md). Earlier sections describe their historical verification stage.
+
+## Recovered MP3 maintenance
+
+MP3's previously unresolved source is now recovered from the exact gitlink target. Focused repairs cover build blockers, CPU accounting/preemption, batch shutdown, malformed/cross-page loading, memory shortage, syscall memory boundaries and file-error/ownership cleanup. See [MP3 repair records](../NachOS-4.0_MP3/README.md). Unsupported syscalls/user exceptions, paths/symlinks as a host security boundary, the real simulated-disk filesystem and non-Linux teardown behavior remain outside the tested configuration. MP1/MP2 per-process file ownership remains open; MP3 ownership is now enforced.

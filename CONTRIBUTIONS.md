@@ -17,7 +17,7 @@ The repository has three import-oriented commits, not a complete development his
 
 MP4 constructor/think/eat routines and most headers are described in the report as supplied scaffolding. NachOS libraries, simulation, scheduling support, filesystem support, and example programs are primarily framework material with local assignment modifications. The MIPS toolchain is third-party software.
 
-Bundled test programs are not independently established as personally authored. MP1-to-MP2 differences may include starter-version changes and must not be presented wholesale as personal contributions. MP3 cannot be attributed or described without recovering its source.
+Bundled test programs are not independently established as personally authored. MP1-to-MP2 differences may include starter-version changes and must not be presented wholesale as personal contributions. MP3 has now been recovered from the exact former gitlink target; its one import commit and supplied report support contribution areas, not whole-file authorship.
 
 ## Subsequent local maintenance
 
@@ -30,3 +30,7 @@ The later [MP1 syscall-boundary validation](docs/mp1-user-memory-fix.md) is also
 The [MP4 synchronization and safe-stop changes](docs/mp4-lifecycle-fix.md), including changes to supplied constructor/think routines, are post-course maintenance with separate new tests; they do not establish original student authorship of supplied scaffolding.
 
 The subsequent [FIFO fairness repair](docs/mp4-fairness-fix.md) is also post-course maintenance. It changes Table header/API and scheduling implementation; its conditional progress argument must not be attributed to the original submission.
+
+## Recovered MP3 and later maintenance
+
+Original MP3 scheduling work is concentrated in threads/thread.*, scheduler.* and alarm.cc, with CPU burst/remaining-time logic and queue/timer integration. The recovered report and specification were compared locally with these sources. No untouched starter is available, so inherited MP1/MP2 work and framework support cannot be attributed wholesale to the student. The seventeen maintained files and all new regression drivers are subsequent 2026 repairs, not verified functionality of the original course submission. See [MP3 repair and test documentation](NachOS-4.0_MP3/README.md).

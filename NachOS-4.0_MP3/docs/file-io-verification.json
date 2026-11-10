@@ -1,0 +1,1253 @@
+{
+  "baseline": "57e8e4e99d06b5ff2a268524887d22a3932d611a",
+  "changed_original_files": [
+    "code/build.linux/Makefile.dep",
+    "code/filesys/filesys.h",
+    "code/filesys/openfile.h",
+    "code/lib/list.cc",
+    "code/lib/sysdep.cc",
+    "code/lib/sysdep.h",
+    "code/threads/alarm.cc",
+    "code/threads/kernel.cc",
+    "code/threads/kernel.h",
+    "code/threads/scheduler.cc",
+    "code/threads/scheduler.h",
+    "code/threads/thread.cc",
+    "code/threads/thread.h",
+    "code/userprog/addrspace.cc",
+    "code/userprog/addrspace.h",
+    "code/userprog/exception.cc",
+    "code/userprog/ksyscall.h"
+  ],
+  "source_sha256_lf": {
+    "code/build.linux/Makefile.dep": "263cb1483d88426394f2b81e86cf82eadd38cd4cadcf6a2b9825af09dd8d96c0",
+    "code/filesys/filesys.h": "51b0819203bc299fba6280dc29dd1878360cd98c2144d8e91911aa6698de06b0",
+    "code/filesys/openfile.h": "b10babb1fdb9ecd96859c8d427e38e60ffaddf045d77d2a945b82f5e339a4454",
+    "code/lib/list.cc": "9251f9ba8fa3b5c77732fe4dc7ae47a3259fbf5c2de189cbe6ab82dc9326bbea",
+    "code/lib/sysdep.cc": "f80186044797605e7dd1bfcd32bb3742c797eca347e79e1336f936a582d23b9b",
+    "code/lib/sysdep.h": "e74d2eb14d56da1ab5eb54fada2aced7d99f59a9d06f913de816f99b26624c77",
+    "code/threads/alarm.cc": "65d8aa4e4173e833decdd799cf6c28aacc8d1b9337e4ce225c06752376989ec7",
+    "code/threads/kernel.cc": "bc5b14cf419fd8b5edd90a373b6898af53fb7c304317b3e3bacf539b34bcb23e",
+    "code/threads/kernel.h": "580ae2c5223edd91aa930b06db705a40d2349607f544abd5ff65e47688b65513",
+    "code/threads/scheduler.cc": "b87cd5aec2b6c300ef08a974461669c7482d833423461bad82b8c5b9acc2ccf3",
+    "code/threads/scheduler.h": "de6bde26bb985ebff25f4970b88911651407040d280eff48637a9ccda89a7dd2",
+    "code/threads/thread.cc": "ee6d9853f3407886c2aecbbcf3ab6bf020c95d84345c9d06a1133e188dc1e017",
+    "code/threads/thread.h": "8b7684361220abf6e9deca021cb9d4859b3c59f9d460e8351b95c677b80a4c25",
+    "code/userprog/addrspace.cc": "c00e1acadbe934660b21376f968234e54df58b2ff2b3e3d5ba432b41acf81bb2",
+    "code/userprog/addrspace.h": "9ab19c0826ef8890bcc226cf04721921ebdddd42ba6d8257df653fce562bea30",
+    "code/userprog/exception.cc": "b9509c73c09125b78e01df1c838fe5d1811876b7d6b3b84b5493c357e3be9641",
+    "code/userprog/ksyscall.h": "5384c8f593f7bb6eb4fe10a18b5b85189d525711d880f063fc351a056d84ea7a"
+  },
+  "stage_production_scope": [
+    "code/filesys/filesys.h",
+    "code/filesys/openfile.h",
+    "code/lib/sysdep.cc",
+    "code/lib/sysdep.h",
+    "code/threads/thread.cc",
+    "code/userprog/ksyscall.h"
+  ],
+  "previous_syscall_boundary_unchanged": true,
+  "previous_source_repairs_unchanged_except_finish_cleanup": true,
+  "original_snapshot_zip_bundle_unchanged": true,
+  "prior_mp1_mp2_mp4_sources_unchanged": true,
+  "host_build_without_permissive": "passed",
+  "mips_targets_rebuilt": {
+    "course": 3,
+    "pressure": 3,
+    "syscall_recovery_identities": 2,
+    "file_io_identities": 3
+  },
+  "suites": {
+    "file_io": [
+      {
+        "case": "allocation_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "create_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "open_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "missing_parent",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "missing_file",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "open_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "create_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "create_close_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "capacity",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "cross_owner",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "owner_cleanup",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "owner_cleanup_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "finish_cleanup",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "destructor_cleanup",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "cleanup_close_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "close_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "close_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "double_close",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "invalid_ids",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "length_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "length_host_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "length_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "offset_limits",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "readat_length",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "read_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "write_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "read_seek_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "write_seek_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "read_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "write_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "read_seek_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "write_seek_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "short_read",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "short_write",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "zero_write",
+        "passed": true,
+        "returncode": 0
+      }
+    ],
+    "file_io_mips": [
+      {
+        "case": "single_capacity",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          70
+        ],
+        "files_hex": {
+          "io-capacity.bin": "41"
+        }
+      },
+      {
+        "case": "nine_reuse",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          70,
+          70,
+          70,
+          70,
+          70,
+          70,
+          70,
+          70,
+          70
+        ],
+        "files_hex": {
+          "io-capacity.bin": "41"
+        }
+      },
+      {
+        "case": "dual",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          71,
+          72
+        ],
+        "files_hex": {
+          "io-one.bin": "42",
+          "io-two.bin": "43"
+        }
+      },
+      {
+        "case": "dual_reverse",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          72,
+          71
+        ],
+        "files_hex": {
+          "io-one.bin": "42",
+          "io-two.bin": "43"
+        }
+      }
+    ],
+    "user_memory": [
+      {
+        "case": "filename_cross_page",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "filename_max",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "open_cross_page",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "negative_name",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "name_at_limit",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "far_name",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "empty_name",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "unterminated_name",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "name_too_long",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "name_invalid_page",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "name_negative_frame",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "name_upper_frame",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "missing_space",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "missing_table",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "empty_table",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "oversized_table",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "write_cross_page",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "write_readonly_source",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "read_cross_page",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "eof_tail",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "invalid_later_write",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "invalid_later_read",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "readonly_read",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "negative_count",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "oversized_count",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "huge_count",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "buffer_at_limit",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "buffer_tail",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "far_buffer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "negative_buffer_frame",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "upper_buffer_frame",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "zero_read",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "zero_write",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "invalid_descriptor",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "pc_delay_slot",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "message_negative",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "message_unterminated",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "message_cross_page",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "message_last_zero",
+        "passed": true,
+        "returncode": 0
+      }
+    ],
+    "user_mips": [
+      {
+        "case": "single",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          61
+        ],
+        "files_correct": true
+      },
+      {
+        "case": "dual",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          61,
+          62
+        ],
+        "files_correct": true
+      },
+      {
+        "case": "dual_reverse",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          62,
+          61
+        ],
+        "files_correct": true
+      }
+    ],
+    "loader": [
+      {
+        "case": "valid_control",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_short",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_exact",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_two_pages",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_unaligned",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_rdata",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_shared",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_gapped",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_swapped",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_short_header",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_bad_magic",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_negative_size",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_negative_address",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_bad_offset",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_integer_end",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_truncated",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_overlap",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_oversized",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "full_capacity",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "zero_available",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "inconsistent_counter",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "partial_short_read",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "repeated_failure",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "resident_isolation",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "retry_same_object",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "already_loaded",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "invalid_translation",
+        "passed": true,
+        "returncode": 0
+      }
+    ],
+    "pressure": [
+      {
+        "case": "oversized_alone",
+        "passed": true,
+        "returncode": 0,
+        "returns": [],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      },
+      {
+        "case": "oversized_then_small",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      },
+      {
+        "case": "small_then_oversized",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      },
+      {
+        "case": "resident_survives",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          77
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      },
+      {
+        "case": "small_then_resident",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3,
+          77
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      },
+      {
+        "case": "two_large",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          77
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      },
+      {
+        "case": "reclaim_nine_large",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          78,
+          78,
+          78,
+          78,
+          78,
+          78,
+          78,
+          78,
+          78
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      },
+      {
+        "case": "malformed_then_valid",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      }
+    ],
+    "scheduling": [
+      {
+        "case": "initial",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "first_burst",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "last_slice",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "zero_burst",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "kernel_and_no_double_count",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "ready_time_excluded",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "clamped_fifo",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "live_remaining",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "shorter_timer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "longer_timer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "equal_timer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "zero_timer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "empty_timer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "idle_timer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "timer_recheck",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "wake_defers",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "voluntary_yield",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "settle_before_insert",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "multiple_preemptions",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "negative_remaining_timer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "fractional_estimate",
+        "passed": true,
+        "returncode": 0
+      }
+    ],
+    "lifecycle": [
+      {
+        "case": "empty",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "early_launch",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "two_live",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "duplicate",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "foreign",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "capacity",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "standalone",
+        "passed": true,
+        "returncode": 0
+      }
+    ],
+    "shutdown": [
+      {
+        "case": "empty",
+        "passed": true,
+        "returncode": 0,
+        "returns": [],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "single",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "pair",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          1,
+          2
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "reverse",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          1,
+          2
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "random7",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          1,
+          2
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "random23",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          1,
+          2
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "missing",
+        "passed": true,
+        "returncode": 0,
+        "returns": [],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "missing_then_valid",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "valid_then_missing",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "all_missing",
+        "passed": true,
+        "returncode": 0,
+        "returns": [],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "capacity",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "missing_operand",
+        "passed": true,
+        "returncode": 1,
+        "returns": [],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true,
+          "parse_error": true
+        }
+      },
+      {
+        "case": "option_operand",
+        "passed": true,
+        "returncode": 1,
+        "returns": [],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true,
+          "parse_error": true
+        }
+      },
+      {
+        "case": "too_many",
+        "passed": true,
+        "returncode": 1,
+        "returns": [],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true,
+          "parse_error": true
+        }
+      },
+      {
+        "case": "console_file",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          1,
+          2
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true,
+          "complete_console_output": true
+        }
+      }
+    ],
+    "trace_shutdown": [
+      {
+        "case": "single_no_trace",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "single_trace",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "pair",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "pair_reverse",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "pair_trace",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "pair_reverse_trace",
+        "passed": true,
+        "returncode": 0
+      }
+    ],
+    "trace_validation": [
+      {
+        "case": "single_no_trace",
+        "scheduling_passed": true,
+        "shutdown_completed": true
+      },
+      {
+        "case": "single_trace",
+        "scheduling_passed": true,
+        "shutdown_completed": true
+      },
+      {
+        "case": "pair",
+        "scheduling_passed": true,
+        "shutdown_completed": true
+      },
+      {
+        "case": "pair_reverse",
+        "scheduling_passed": true,
+        "shutdown_completed": true
+      },
+      {
+        "case": "pair_trace",
+        "scheduling_passed": true,
+        "shutdown_completed": true
+      },
+      {
+        "case": "pair_reverse_trace",
+        "scheduling_passed": true,
+        "shutdown_completed": true
+      },
+      {
+        "case": "pair_trace_accounting",
+        "passed": true,
+        "estimate_updates_checked": 5,
+        "strictly_shorter_preemptions_checked": 0
+      },
+      {
+        "case": "pair_reverse_trace_accounting",
+        "passed": true,
+        "estimate_updates_checked": 5,
+        "strictly_shorter_preemptions_checked": 3
+      }
+    ]
+  },
+  "supported_configuration": "FILESYS_STUB, RDATA, SIM_FIX, x86 Linux linear page tables",
+  "github_modified": false
+}

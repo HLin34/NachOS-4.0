@@ -1,0 +1,1503 @@
+{
+  "stage": "fresh GitHub branch clone compiled and fully verified before merge",
+  "base_main": "97bd863ae1aa5443eca93cd58d9ecfaa443e33a8",
+  "original_mp3_commit": "57e8e4e99d06b5ff2a268524887d22a3932d611a",
+  "import_policy": "ordinary text source/test/docs; no new PDFs, nested Git metadata, binaries or compiler package",
+  "imported_original_text_paths": [
+    "COPYRIGHT",
+    "code/README",
+    "code/build.linux/Makefile",
+    "code/build.linux/Makefile.dep",
+    "code/demotest.sh",
+    "code/filesys/directory.cc",
+    "code/filesys/directory.h",
+    "code/filesys/filehdr.cc",
+    "code/filesys/filehdr.h",
+    "code/filesys/filesys.cc",
+    "code/filesys/filesys.h",
+    "code/filesys/openfile.cc",
+    "code/filesys/openfile.h",
+    "code/filesys/pbitmap.cc",
+    "code/filesys/pbitmap.h",
+    "code/filesys/synchdisk.cc",
+    "code/filesys/synchdisk.h",
+    "code/lib/bitmap.cc",
+    "code/lib/bitmap.h",
+    "code/lib/copyright.h",
+    "code/lib/debug.cc",
+    "code/lib/debug.h",
+    "code/lib/hash.cc",
+    "code/lib/hash.h",
+    "code/lib/libtest.cc",
+    "code/lib/libtest.h",
+    "code/lib/list.cc",
+    "code/lib/list.h",
+    "code/lib/sysdep.cc",
+    "code/lib/sysdep.h",
+    "code/lib/utility.h",
+    "code/machine/callback.h",
+    "code/machine/console.cc",
+    "code/machine/console.h",
+    "code/machine/disk.cc",
+    "code/machine/disk.h",
+    "code/machine/interrupt.cc",
+    "code/machine/interrupt.h",
+    "code/machine/machine.cc",
+    "code/machine/machine.h",
+    "code/machine/mipssim.cc",
+    "code/machine/mipssim.h",
+    "code/machine/network.cc",
+    "code/machine/network.h",
+    "code/machine/stats.cc",
+    "code/machine/stats.h",
+    "code/machine/timer.cc",
+    "code/machine/timer.h",
+    "code/machine/translate.cc",
+    "code/machine/translate.h",
+    "code/network/post.cc",
+    "code/network/post.h",
+    "code/test/LotOfAdd.c",
+    "code/test/Makefile",
+    "code/test/Makefile.dep",
+    "code/test/add.c",
+    "code/test/consoleIO_test1.c",
+    "code/test/consoleIO_test2.c",
+    "code/test/createFile.c",
+    "code/test/fileIO_test1.c",
+    "code/test/fileIO_test2.c",
+    "code/test/halt.c",
+    "code/test/hw3t1.c",
+    "code/test/hw3t2.c",
+    "code/test/hw3t3.c",
+    "code/test/matmult.c",
+    "code/test/script",
+    "code/test/segments.c",
+    "code/test/shell.c",
+    "code/test/sort.c",
+    "code/test/start.S",
+    "code/test/test.c",
+    "code/threads/alarm.cc",
+    "code/threads/alarm.h",
+    "code/threads/kernel.cc",
+    "code/threads/kernel.h",
+    "code/threads/main.cc",
+    "code/threads/main.h",
+    "code/threads/scheduler.cc",
+    "code/threads/scheduler.h",
+    "code/threads/switch.S",
+    "code/threads/switch.h",
+    "code/threads/synch.cc",
+    "code/threads/synch.h",
+    "code/threads/synchlist.cc",
+    "code/threads/synchlist.h",
+    "code/threads/thread.cc",
+    "code/threads/thread.h",
+    "code/userprog/addrspace.cc",
+    "code/userprog/addrspace.h",
+    "code/userprog/errno.h",
+    "code/userprog/exception.cc",
+    "code/userprog/ksyscall.h",
+    "code/userprog/noff.h",
+    "code/userprog/synchconsole.cc",
+    "code/userprog/synchconsole.h",
+    "code/userprog/syscall.h",
+    "coff2noff/Makefile",
+    "coff2noff/Makefile.dep",
+    "coff2noff/coff.h",
+    "coff2noff/coff2noff.c",
+    "coff2noff/copyright.h",
+    "coff2noff/noff.h"
+  ],
+  "maintained_source_hashes": {
+    "code/build.linux/Makefile.dep": "263cb1483d88426394f2b81e86cf82eadd38cd4cadcf6a2b9825af09dd8d96c0",
+    "code/filesys/filesys.h": "51b0819203bc299fba6280dc29dd1878360cd98c2144d8e91911aa6698de06b0",
+    "code/filesys/openfile.h": "b10babb1fdb9ecd96859c8d427e38e60ffaddf045d77d2a945b82f5e339a4454",
+    "code/lib/list.cc": "9251f9ba8fa3b5c77732fe4dc7ae47a3259fbf5c2de189cbe6ab82dc9326bbea",
+    "code/lib/sysdep.cc": "f80186044797605e7dd1bfcd32bb3742c797eca347e79e1336f936a582d23b9b",
+    "code/lib/sysdep.h": "e74d2eb14d56da1ab5eb54fada2aced7d99f59a9d06f913de816f99b26624c77",
+    "code/threads/alarm.cc": "65d8aa4e4173e833decdd799cf6c28aacc8d1b9337e4ce225c06752376989ec7",
+    "code/threads/kernel.cc": "bc5b14cf419fd8b5edd90a373b6898af53fb7c304317b3e3bacf539b34bcb23e",
+    "code/threads/kernel.h": "580ae2c5223edd91aa930b06db705a40d2349607f544abd5ff65e47688b65513",
+    "code/threads/scheduler.cc": "b87cd5aec2b6c300ef08a974461669c7482d833423461bad82b8c5b9acc2ccf3",
+    "code/threads/scheduler.h": "de6bde26bb985ebff25f4970b88911651407040d280eff48637a9ccda89a7dd2",
+    "code/threads/thread.cc": "ee6d9853f3407886c2aecbbcf3ab6bf020c95d84345c9d06a1133e188dc1e017",
+    "code/threads/thread.h": "8b7684361220abf6e9deca021cb9d4859b3c59f9d460e8351b95c677b80a4c25",
+    "code/userprog/addrspace.cc": "c00e1acadbe934660b21376f968234e54df58b2ff2b3e3d5ba432b41acf81bb2",
+    "code/userprog/addrspace.h": "9ab19c0826ef8890bcc226cf04721921ebdddd42ba6d8257df653fce562bea30",
+    "code/userprog/exception.cc": "b9509c73c09125b78e01df1c838fe5d1811876b7d6b3b84b5493c357e3be9641",
+    "code/userprog/ksyscall.h": "5384c8f593f7bb6eb4fe10a18b5b85189d525711d880f063fc351a056d84ea7a"
+  },
+  "tested_github_commit": "fb9757678bab7aa2a4736fef0a14b2bfcc7c8450",
+  "tested_root_tree": "454461a384988184b49884bea2423cd6e625daa6",
+  "tested_mp3_tree": "79a44127c31bb297783341814102dc247edbf8ba",
+  "host_build": "passed",
+  "compiler": "g++ -std=gnu++11, -m32; no -fpermissive",
+  "configuration": "FILESYS_STUB, RDATA, SIM_FIX, x86 Linux linear page table",
+  "suites": {
+    "file_io": {
+      "cases": 35,
+      "passed": 35
+    },
+    "file_io_mips": {
+      "cases": 4,
+      "passed": 4
+    },
+    "user_memory": {
+      "cases": 39,
+      "passed": 39
+    },
+    "user_mips": {
+      "cases": 3,
+      "passed": 3
+    },
+    "loader": {
+      "cases": 27,
+      "passed": 27
+    },
+    "pressure": {
+      "cases": 8,
+      "passed": 8
+    },
+    "scheduling": {
+      "cases": 21,
+      "passed": 21
+    },
+    "lifecycle": {
+      "cases": 7,
+      "passed": 7
+    },
+    "shutdown": {
+      "cases": 15,
+      "passed": 15
+    },
+    "trace_shutdown": {
+      "cases": 6,
+      "passed": 6
+    },
+    "trace_validation": {
+      "records": 8,
+      "passed": 8
+    }
+  },
+  "case_records": {
+    "file_io": [
+      {
+        "case": "allocation_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "create_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "open_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "missing_parent",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "missing_file",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "open_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "create_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "create_close_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "capacity",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "cross_owner",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "owner_cleanup",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "owner_cleanup_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "finish_cleanup",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "destructor_cleanup",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "cleanup_close_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "close_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "close_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "double_close",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "invalid_ids",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "length_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "length_host_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "length_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "offset_limits",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "readat_length",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "read_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "write_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "read_seek_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "write_seek_error",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "read_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "write_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "read_seek_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "write_seek_eintr",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "short_read",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "short_write",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "zero_write",
+        "passed": true,
+        "returncode": 0
+      }
+    ],
+    "file_io_mips": [
+      {
+        "case": "single_capacity",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          70
+        ],
+        "files_hex": {
+          "io-capacity.bin": "41"
+        }
+      },
+      {
+        "case": "nine_reuse",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          70,
+          70,
+          70,
+          70,
+          70,
+          70,
+          70,
+          70,
+          70
+        ],
+        "files_hex": {
+          "io-capacity.bin": "41"
+        }
+      },
+      {
+        "case": "dual",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          71,
+          72
+        ],
+        "files_hex": {
+          "io-one.bin": "42",
+          "io-two.bin": "43"
+        }
+      },
+      {
+        "case": "dual_reverse",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          72,
+          71
+        ],
+        "files_hex": {
+          "io-one.bin": "42",
+          "io-two.bin": "43"
+        }
+      }
+    ],
+    "user_memory": [
+      {
+        "case": "filename_cross_page",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "filename_max",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "open_cross_page",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "negative_name",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "name_at_limit",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "far_name",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "empty_name",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "unterminated_name",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "name_too_long",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "name_invalid_page",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "name_negative_frame",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "name_upper_frame",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "missing_space",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "missing_table",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "empty_table",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "oversized_table",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "write_cross_page",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "write_readonly_source",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "read_cross_page",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "eof_tail",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "invalid_later_write",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "invalid_later_read",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "readonly_read",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "negative_count",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "oversized_count",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "huge_count",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "buffer_at_limit",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "buffer_tail",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "far_buffer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "negative_buffer_frame",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "upper_buffer_frame",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "zero_read",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "zero_write",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "invalid_descriptor",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "pc_delay_slot",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "message_negative",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "message_unterminated",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "message_cross_page",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "message_last_zero",
+        "passed": true,
+        "returncode": 0
+      }
+    ],
+    "user_mips": [
+      {
+        "case": "single",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          61
+        ],
+        "files_correct": true
+      },
+      {
+        "case": "dual",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          61,
+          62
+        ],
+        "files_correct": true
+      },
+      {
+        "case": "dual_reverse",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          62,
+          61
+        ],
+        "files_correct": true
+      }
+    ],
+    "loader": [
+      {
+        "case": "valid_control",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_short",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_exact",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_two_pages",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_unaligned",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_rdata",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_shared",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_gapped",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "layout_swapped",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_short_header",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_bad_magic",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_negative_size",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_negative_address",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_bad_offset",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_integer_end",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_truncated",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_overlap",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "reject_oversized",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "full_capacity",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "zero_available",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "inconsistent_counter",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "partial_short_read",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "repeated_failure",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "resident_isolation",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "retry_same_object",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "already_loaded",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "invalid_translation",
+        "passed": true,
+        "returncode": 0
+      }
+    ],
+    "pressure": [
+      {
+        "case": "oversized_alone",
+        "passed": true,
+        "returncode": 0,
+        "returns": [],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      },
+      {
+        "case": "oversized_then_small",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      },
+      {
+        "case": "small_then_oversized",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      },
+      {
+        "case": "resident_survives",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          77
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      },
+      {
+        "case": "small_then_resident",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3,
+          77
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      },
+      {
+        "case": "two_large",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          77
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      },
+      {
+        "case": "reclaim_nine_large",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          78,
+          78,
+          78,
+          78,
+          78,
+          78,
+          78,
+          78,
+          78
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      },
+      {
+        "case": "malformed_then_valid",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "one_halt": true,
+          "no_assertion": true,
+          "shortages": true,
+          "invalid": true
+        }
+      }
+    ],
+    "scheduling": [
+      {
+        "case": "initial",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "first_burst",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "last_slice",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "zero_burst",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "kernel_and_no_double_count",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "ready_time_excluded",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "clamped_fifo",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "live_remaining",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "shorter_timer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "longer_timer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "equal_timer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "zero_timer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "empty_timer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "idle_timer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "timer_recheck",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "wake_defers",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "voluntary_yield",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "settle_before_insert",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "multiple_preemptions",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "negative_remaining_timer",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "fractional_estimate",
+        "passed": true,
+        "returncode": 0
+      }
+    ],
+    "lifecycle": [
+      {
+        "case": "empty",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "early_launch",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "two_live",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "duplicate",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "foreign",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "capacity",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "standalone",
+        "passed": true,
+        "returncode": 0
+      }
+    ],
+    "shutdown": [
+      {
+        "case": "empty",
+        "passed": true,
+        "returncode": 0,
+        "returns": [],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "single",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "pair",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          1,
+          2
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "reverse",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          1,
+          2
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "random7",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          1,
+          2
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "random23",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          1,
+          2
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "missing",
+        "passed": true,
+        "returncode": 0,
+        "returns": [],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "missing_then_valid",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "valid_then_missing",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "all_missing",
+        "passed": true,
+        "returncode": 0,
+        "returns": [],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "capacity",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true
+        }
+      },
+      {
+        "case": "missing_operand",
+        "passed": true,
+        "returncode": 1,
+        "returns": [],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true,
+          "parse_error": true
+        }
+      },
+      {
+        "case": "option_operand",
+        "passed": true,
+        "returncode": 1,
+        "returns": [],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true,
+          "parse_error": true
+        }
+      },
+      {
+        "case": "too_many",
+        "passed": true,
+        "returncode": 1,
+        "returns": [],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true,
+          "parse_error": true
+        }
+      },
+      {
+        "case": "console_file",
+        "passed": true,
+        "returncode": 0,
+        "returns": [
+          1,
+          2
+        ],
+        "checks": {
+          "exit": true,
+          "returns": true,
+          "single_halt": true,
+          "no_assertion": true,
+          "missing_reports": true,
+          "complete_console_output": true
+        }
+      }
+    ],
+    "trace_shutdown": [
+      {
+        "case": "single_no_trace",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "single_trace",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "pair",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "pair_reverse",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "pair_trace",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "pair_reverse_trace",
+        "passed": true,
+        "returncode": 0
+      }
+    ],
+    "trace_validation": [
+      {
+        "case": "single_no_trace",
+        "scheduling_passed": true,
+        "shutdown_completed": true
+      },
+      {
+        "case": "single_trace",
+        "scheduling_passed": true,
+        "shutdown_completed": true
+      },
+      {
+        "case": "pair",
+        "scheduling_passed": true,
+        "shutdown_completed": true
+      },
+      {
+        "case": "pair_reverse",
+        "scheduling_passed": true,
+        "shutdown_completed": true
+      },
+      {
+        "case": "pair_trace",
+        "scheduling_passed": true,
+        "shutdown_completed": true
+      },
+      {
+        "case": "pair_reverse_trace",
+        "scheduling_passed": true,
+        "shutdown_completed": true
+      },
+      {
+        "case": "pair_trace_accounting",
+        "passed": true,
+        "estimate_updates_checked": 5,
+        "strictly_shorter_preemptions_checked": 0
+      },
+      {
+        "case": "pair_reverse_trace_accounting",
+        "passed": true,
+        "estimate_updates_checked": 5,
+        "strictly_shorter_preemptions_checked": 3
+      }
+    ]
+  },
+  "unrelated_existing_entries_preserved": 658,
+  "maintained_local_archive_sha256": "57b3f658b69a49ec13f116bc0ce8d652ba88c15d391c8035383aff02843af690",
+  "initial_fresh_clone_issue": "Windows checkout CRLF in existing compiler specs; corrected by exporting toolchain Git blobs directly",
+  "subsequent_change_scope": "publication result documentation only; tested MP3 source, tests and scripts unchanged",
+  "tested_input_sha256_lf": {
+    "NachOS-4.0_MP3/code/demotest.sh": "56fa6bb8bd1d5b80f56cdd91d8d17865090c9cbf9d74433c273fc8ad3e7c4712",
+    "NachOS-4.0_MP3/code/README": "55b10b2588104d4ceb91c7cbd0b6d275ee7a0ad0ad46da10be07359c2c9a22de",
+    "NachOS-4.0_MP3/code/build.linux/Makefile": "148e7e404a6f722b57c33b673f742caf29e13ba2dc5ad651c5697dfa0b8a4807",
+    "NachOS-4.0_MP3/code/build.linux/Makefile.dep": "263cb1483d88426394f2b81e86cf82eadd38cd4cadcf6a2b9825af09dd8d96c0",
+    "NachOS-4.0_MP3/code/filesys/directory.cc": "1fb6d7c661c1887b4188ff41763f060dec5e6d16d671288ab75da55b141f8a9c",
+    "NachOS-4.0_MP3/code/filesys/directory.h": "b6caba099b898f22b13480044a76f5be4c77eb232c3824a07612401845448a46",
+    "NachOS-4.0_MP3/code/filesys/filehdr.cc": "7ed142eb2847654bee8e0f37b2554e96ab7221b7e24876a9b3fc77465c69e568",
+    "NachOS-4.0_MP3/code/filesys/filehdr.h": "ca81afa52572f245f0a4b89b808bd0a544e31ba7170a0d07f569b224383bdb99",
+    "NachOS-4.0_MP3/code/filesys/filesys.cc": "4d0b179a877b51fd98db1674708710982a0e05551c979172fc22b547fae465f1",
+    "NachOS-4.0_MP3/code/filesys/filesys.h": "51b0819203bc299fba6280dc29dd1878360cd98c2144d8e91911aa6698de06b0",
+    "NachOS-4.0_MP3/code/filesys/openfile.cc": "e1342e1c9170f42a8a6f96da189bd783d67c186f6cf720ea5f2dc3ec5506c520",
+    "NachOS-4.0_MP3/code/filesys/openfile.h": "b10babb1fdb9ecd96859c8d427e38e60ffaddf045d77d2a945b82f5e339a4454",
+    "NachOS-4.0_MP3/code/filesys/pbitmap.cc": "2b00db35b154712d8f65e6acee73ea2d331223c2a5681d9c392649596d2c11ae",
+    "NachOS-4.0_MP3/code/filesys/pbitmap.h": "559b85737740dbce746f67a8a27dbe554ff5d7b2ee0c054f2a77d831dff61167",
+    "NachOS-4.0_MP3/code/filesys/synchdisk.cc": "2942df3945f7dea8a8b5ea9d5a0a3f282352bd27dde7ddc75c4d4a2cfa1e3ffe",
+    "NachOS-4.0_MP3/code/filesys/synchdisk.h": "ee1f8cf68f8ae3fb015c833e2ab50e89057837a9837f57d85fbdbf3942c43888",
+    "NachOS-4.0_MP3/code/lib/bitmap.cc": "870c9db86a15c92ae1836254b9372bfa254a929666e440a1fe2bbb94de3f9959",
+    "NachOS-4.0_MP3/code/lib/bitmap.h": "2faabf99483e6292f2e8b716893743038dccf3ca66abaae1e829d5a4fb8de551",
+    "NachOS-4.0_MP3/code/lib/copyright.h": "0882bb2324ad6b54229bd1a3508ce15e108a1b3f82f6051c47e7ef4522e755f7",
+    "NachOS-4.0_MP3/code/lib/debug.cc": "7ffb1ecd8c869dfc55122e84e57145f2c785e457d39ec09fa50385d570e405a6",
+    "NachOS-4.0_MP3/code/lib/debug.h": "1f7cf578ae434f7fc875d14c899088efa5ce6ee342e7f2cc4e6ca0837382cb9f",
+    "NachOS-4.0_MP3/code/lib/hash.cc": "cd0dbf2ca403736dacb73168d61239d32052199963624ae7edbdb619c59e2869",
+    "NachOS-4.0_MP3/code/lib/hash.h": "75228f31845cb07c5a1119e7b76b7a17b2e37c5d2eab28ff166b43218a45cf0b",
+    "NachOS-4.0_MP3/code/lib/libtest.cc": "a8503a53ad6fb1a1a738fa220aff7acd13b2ec2784dcbed0e699b05a5896097a",
+    "NachOS-4.0_MP3/code/lib/libtest.h": "d8d1c9ccd5fba1b413b1e83207599bd2c30b7794bc5a681687ad60f925b50741",
+    "NachOS-4.0_MP3/code/lib/list.cc": "9251f9ba8fa3b5c77732fe4dc7ae47a3259fbf5c2de189cbe6ab82dc9326bbea",
+    "NachOS-4.0_MP3/code/lib/list.h": "16ff6df66c13af086f4902a2d6a0c596268fe268e22344a80923adc324d53417",
+    "NachOS-4.0_MP3/code/lib/sysdep.cc": "f80186044797605e7dd1bfcd32bb3742c797eca347e79e1336f936a582d23b9b",
+    "NachOS-4.0_MP3/code/lib/sysdep.h": "e74d2eb14d56da1ab5eb54fada2aced7d99f59a9d06f913de816f99b26624c77",
+    "NachOS-4.0_MP3/code/lib/utility.h": "f4e3a0f248ee1ffe9fabcf5d19094fde655aa779d9cff816db949cfb454fc4df",
+    "NachOS-4.0_MP3/code/machine/callback.h": "513c20d6407e54abc159edfcfcdf845e2a6ab904d11df4d445cf352d9d2a7df2",
+    "NachOS-4.0_MP3/code/machine/console.cc": "8d1a9a2a888cea3109bff3e9ca73b7fe0e488ee66d86c61ed7601097583b8d94",
+    "NachOS-4.0_MP3/code/machine/console.h": "e3a3de45bf78735bc3d9e8d0f63b893936dff72787bfed48b2eca68a2258c603",
+    "NachOS-4.0_MP3/code/machine/disk.cc": "dc554dab48a74a544f321d1268e2138114de74bb5200edaa2a928a4fbc86d5a3",
+    "NachOS-4.0_MP3/code/machine/disk.h": "5f64e3e79e2567861e3868da4f6fd8828acc70d5c9cdf438e88aca5e77cd0efb",
+    "NachOS-4.0_MP3/code/machine/interrupt.cc": "ce65051fe9eb3fe3249a13932fae423e8da8f13b4318e8436c464622c16ee07f",
+    "NachOS-4.0_MP3/code/machine/interrupt.h": "3c8e562d3cc3cd6bb57235bc09f2713ecefe3e2b69d5f105cd1e3dfbe380e00c",
+    "NachOS-4.0_MP3/code/machine/machine.cc": "499449e363d3465482cb6558ce9ea079d7ae75027521450230bf2f94bf855ad4",
+    "NachOS-4.0_MP3/code/machine/machine.h": "f1007ec766ab8bc6fab5ee52e5d1a8c88acc6722baa716478db102b2e4ffcf25",
+    "NachOS-4.0_MP3/code/machine/mipssim.cc": "3ea9be6020d4a58878fe1cd2beae52f34e3eda94c6cd37d242385f22e1575613",
+    "NachOS-4.0_MP3/code/machine/mipssim.h": "af5c950f5d20c5ca9513d91ede52a53016d320a69883babbb8d85a04dd0b37dc",
+    "NachOS-4.0_MP3/code/machine/network.cc": "8d59c26207518374630442981bf48d538dc8f8ee41e58b41c4aaa69c075fa088",
+    "NachOS-4.0_MP3/code/machine/network.h": "06de9fe609565bd513baf7497fd2300d8299eeadbe4583da71aee18e72360357",
+    "NachOS-4.0_MP3/code/machine/stats.cc": "dbbbfaa3623588350e20505fd61c82dd7a5ae8f892ab86a6531450136485f4a2",
+    "NachOS-4.0_MP3/code/machine/stats.h": "0d9efa3307c7457d78c2fd5a57aff7a7ec4ce42e3d0678771dd0b6fddde468bf",
+    "NachOS-4.0_MP3/code/machine/timer.cc": "dcb02b0f399927a9067b096ba8dbac78ef7a621162fa5669e5ab0bc196ee3c54",
+    "NachOS-4.0_MP3/code/machine/timer.h": "9412e9bd60289a9ce37b3d940545558de4ea261f77990719c5618ee374712d81",
+    "NachOS-4.0_MP3/code/machine/translate.cc": "9138a73a8a9dbd0aeeea189b4a532f618ae9810926576f7c4f30dafff856ae1a",
+    "NachOS-4.0_MP3/code/machine/translate.h": "b899f0c5910c4dd18989421bb02273974bdd8a718deaaad5098bff11ec592798",
+    "NachOS-4.0_MP3/code/network/post.cc": "2075756c49abb5ef0f40be883533f1dd65a28e0390662b2d2374d5d67f84fc89",
+    "NachOS-4.0_MP3/code/network/post.h": "d416ede57beafd4d49a8fc4c5b9ce4d3e129417170ecdde781cfe89b31501a89",
+    "NachOS-4.0_MP3/code/test/add.c": "dc60c95d89ba1ec23280723904508d47cd5fe84ecd3614b629897129d5a1c051",
+    "NachOS-4.0_MP3/code/test/consoleIO_test1.c": "16b7d9c5a9189087c4c405cc25bf8707480f73fb8919fdee4455b90a54b1d881",
+    "NachOS-4.0_MP3/code/test/consoleIO_test2.c": "7c7e5df61a11a5f134f1788830ffa13e700daf61c20a917cff2e0a7385b618b4",
+    "NachOS-4.0_MP3/code/test/createFile.c": "0568ad4ccaf65a259771e290dbb304e2d8634fc948c75cbc8d3e44b358b46acf",
+    "NachOS-4.0_MP3/code/test/fileIO_test1.c": "2e06acc439aca88b963a1b75c1f87218ffc0338745b0cf3dff9b5541133419f2",
+    "NachOS-4.0_MP3/code/test/fileIO_test2.c": "cdc667bcc6847c5522c3532f4fced4e578bae418a34d08b85c5751409121e271",
+    "NachOS-4.0_MP3/code/test/halt.c": "91872dabb245f81211d16eeefbbd263b2ca3fac789ff9a0377dbfc6920905c74",
+    "NachOS-4.0_MP3/code/test/hw3t1.c": "093f55b146c801a80a4abce14d10dc0ec42940321cf3c9afeb246016552a1d33",
+    "NachOS-4.0_MP3/code/test/hw3t2.c": "98e0f3de04d1290d43a8f86e1991a5420ed07840c2977a2b861400779926efdc",
+    "NachOS-4.0_MP3/code/test/hw3t3.c": "278e9840883d7a9c43945c6d7609f054b069e582a58b42456d19b29fc12e5b7d",
+    "NachOS-4.0_MP3/code/test/LotOfAdd.c": "9a7e27ba0deff0dea9b850aca9522213c1534aa41608d98b56cd4576e0583ade",
+    "NachOS-4.0_MP3/code/test/Makefile": "a9ac8ee97441d1c9c8e6d1320a3e3c5ed696fde242d1853bdc4e2ba5b1167e67",
+    "NachOS-4.0_MP3/code/test/Makefile.dep": "d21069416e39e317ee3d5cadc9a2444ffad4db0ab1ad46220267f86be3b0afce",
+    "NachOS-4.0_MP3/code/test/matmult.c": "c314b43f00021641f87168c2f493016494d2252718a329d3e5e7ad757b5009f1",
+    "NachOS-4.0_MP3/code/test/script": "89fd1635da27b46e96c5d589e7f404a5dcec49e0f15e81ba8bffa51df2a6cb57",
+    "NachOS-4.0_MP3/code/test/segments.c": "d2c51784c0792ab2f55adfd86cb1aacb3f781487702e81dcfcb4f3956e0b9fdd",
+    "NachOS-4.0_MP3/code/test/shell.c": "4a48291a4f6c12144343145d57707d9bd4647e76d3d32a7a799da15d12be2717",
+    "NachOS-4.0_MP3/code/test/sort.c": "20b2bcd355a081d61ce92319390db415a952013b869daa9209e4eb1f402ad9d4",
+    "NachOS-4.0_MP3/code/test/start.S": "703bb3d61dd07a22be3a3feb8f82a4db29d57a601f5711b46d07fa4ce1ac2c00",
+    "NachOS-4.0_MP3/code/test/test.c": "8a0a7cbc1f7fee85bb07b77a9bbe354598f33eb921eaac5998592f664d28334b",
+    "NachOS-4.0_MP3/code/threads/alarm.cc": "65d8aa4e4173e833decdd799cf6c28aacc8d1b9337e4ce225c06752376989ec7",
+    "NachOS-4.0_MP3/code/threads/alarm.h": "86e460772160fd48b874ca599d3d8e2bf14477f34942c94d946e94de16590ca9",
+    "NachOS-4.0_MP3/code/threads/kernel.cc": "bc5b14cf419fd8b5edd90a373b6898af53fb7c304317b3e3bacf539b34bcb23e",
+    "NachOS-4.0_MP3/code/threads/kernel.h": "580ae2c5223edd91aa930b06db705a40d2349607f544abd5ff65e47688b65513",
+    "NachOS-4.0_MP3/code/threads/main.cc": "ee1b91d43e651f19ec388d803a459bc138583d791ac28311d5b2a06532e2e7d3",
+    "NachOS-4.0_MP3/code/threads/main.h": "181ecc5cfdde0f70fd50aa32c0735c597a55d88592245edad6fabe819288d151",
+    "NachOS-4.0_MP3/code/threads/scheduler.cc": "b87cd5aec2b6c300ef08a974461669c7482d833423461bad82b8c5b9acc2ccf3",
+    "NachOS-4.0_MP3/code/threads/scheduler.h": "de6bde26bb985ebff25f4970b88911651407040d280eff48637a9ccda89a7dd2",
+    "NachOS-4.0_MP3/code/threads/switch.h": "d48ca9ea5d3323793086a69c29459e008e0c73e002deaf827ac65088a567ba4d",
+    "NachOS-4.0_MP3/code/threads/switch.S": "45447fc710e68997f78798ce0aed77369c58dfa6a48d7c06467632ada9ad7559",
+    "NachOS-4.0_MP3/code/threads/synch.cc": "f20e79e454f83b3354db3e4e39c4d9887aa833b78856dbe6afccd3adbf09e653",
+    "NachOS-4.0_MP3/code/threads/synch.h": "498bec4af981a1ecba0f74d6191e1851a3a93f4a44aca7dad1a268272ebdfbbd",
+    "NachOS-4.0_MP3/code/threads/synchlist.cc": "61891b911e0f6df61de4ed6797a43574c5d678fb54996c632eeb843b06d2db9b",
+    "NachOS-4.0_MP3/code/threads/synchlist.h": "29da9b1a6a127ec0ae35ceca0efc964ac0120ca09c4ba0c753ac3b4f4a52827d",
+    "NachOS-4.0_MP3/code/threads/thread.cc": "ee6d9853f3407886c2aecbbcf3ab6bf020c95d84345c9d06a1133e188dc1e017",
+    "NachOS-4.0_MP3/code/threads/thread.h": "8b7684361220abf6e9deca021cb9d4859b3c59f9d460e8351b95c677b80a4c25",
+    "NachOS-4.0_MP3/code/userprog/addrspace.cc": "c00e1acadbe934660b21376f968234e54df58b2ff2b3e3d5ba432b41acf81bb2",
+    "NachOS-4.0_MP3/code/userprog/addrspace.h": "9ab19c0826ef8890bcc226cf04721921ebdddd42ba6d8257df653fce562bea30",
+    "NachOS-4.0_MP3/code/userprog/errno.h": "49771015105e40aede4ce02e66c4991f2d731f3247dce79007af912d17d6db3d",
+    "NachOS-4.0_MP3/code/userprog/exception.cc": "b9509c73c09125b78e01df1c838fe5d1811876b7d6b3b84b5493c357e3be9641",
+    "NachOS-4.0_MP3/code/userprog/ksyscall.h": "5384c8f593f7bb6eb4fe10a18b5b85189d525711d880f063fc351a056d84ea7a",
+    "NachOS-4.0_MP3/code/userprog/noff.h": "e7be15515e4da7650bcc81c1506c5c6c25de469d036f7954c5458d1c00d276bd",
+    "NachOS-4.0_MP3/code/userprog/synchconsole.cc": "9096512db4f1c7582b03227b2109802d879c82e00c3e7aef8fdcfba80358633a",
+    "NachOS-4.0_MP3/code/userprog/synchconsole.h": "94d39ac9949e3a3c9a63738311148c7fb437e9a9cf2f5afc1f4ee2dc3a8ea421",
+    "NachOS-4.0_MP3/code/userprog/syscall.h": "1b73b446c5ff32fc1af5355708ab28d292c339da82f89bf94c2d6d5e3c0d7292",
+    "NachOS-4.0_MP3/scripts/verify-build.sh": "77c699be493f76032b09434ed5bff5e332878371cdc80cb9c27365febd688592",
+    "NachOS-4.0_MP3/scripts/verify-file-io.sh": "65787a4192549bbf2faf5a1de45451f0e74a3a1597a68141ebdd869a1e06f001",
+    "NachOS-4.0_MP3/scripts/verify-memory.sh": "e7a84b85b970327b27d8d776dd44191147b6a4b45aaf25f25bc95fd129608323",
+    "NachOS-4.0_MP3/scripts/verify-scheduling.sh": "2ac81b6cd0cf8de2eacbfe54a75d0b0e3ea7caefcb4cdb9bb77de9247c400e3f",
+    "NachOS-4.0_MP3/scripts/verify-shutdown.sh": "c62cff95b4328d95d36623f5a0be7531a8f59915e132a1725dc912bf6f848bf9",
+    "NachOS-4.0_MP3/scripts/verify-user-memory.sh": "eab2e28737de72fc8de53fd3fb890870583f477f72ffce2d1a65c71591e06b28",
+    "NachOS-4.0_MP3/tests/batch_lifecycle.cc": "113f2f83e5617209c02922fd74a91d913ef68e9eca66e3712384e26f2bfd3574",
+    "NachOS-4.0_MP3/tests/batch_lifecycle.py": "a08afef6be4eef78e2baf88a09d15fc7b418215357e8ee02ec7ea1ce07866c7f",
+    "NachOS-4.0_MP3/tests/big_exit_user.c": "32b0e23ce811bd1754a713cc547e897b4408406fc3ec129d612fb0dc1630c932",
+    "NachOS-4.0_MP3/tests/file_io.cc": "d53cdda1f3030a20c3ce01e552a955de25a78bbeaf6f408a974ea34830b11ceb",
+    "NachOS-4.0_MP3/tests/file_io.py": "7524e0716a2d9658cc3879adcc62d3d1f2c43f0059a17d022933493e6ff882f6",
+    "NachOS-4.0_MP3/tests/file_io_integration.py": "cc26b81eeb192e405accb1cde56b7169770f2460efe0b6c82369c5eb19230c40",
+    "NachOS-4.0_MP3/tests/file_io_user.c": "8f3590e8fde213677d63db0fa98e2da7eddc50226df142de02a2a6ffb05f3d4f",
+    "NachOS-4.0_MP3/tests/memory.cc": "9ec0a230f9e7fbd8b48f364916d5c05eeabe1c763dcbff876d2554ef9024605d",
+    "NachOS-4.0_MP3/tests/memory.py": "98673844434a9af9d9a465108173d11f6a05a9cbd674599369a835c490d565f9",
+    "NachOS-4.0_MP3/tests/memory_fixtures.py": "dadb831803c5975bad56a94b92bf03d542aeeccbb1f43e9b4f36398c4df616b3",
+    "NachOS-4.0_MP3/tests/memory_integration.py": "0ab69c51f0d1c959a106c2e58628cca483f78dfb83e095bcab6d3570f1079bcf",
+    "NachOS-4.0_MP3/tests/oversized_user.c": "2d889b4279227d408ecda3501360a0a939424fed161a181a309a17aeab53efbf",
+    "NachOS-4.0_MP3/tests/pressure_user.c": "7bb28c8af943a0d99c3d3392487b3803d2ae79aadabea768cb03e58b91436aaa",
+    "NachOS-4.0_MP3/tests/scheduling.cc": "b6b7e430d332233b129a4725b577b267477b36931961c10ac0e3c7b8bbf1f881",
+    "NachOS-4.0_MP3/tests/scheduling.py": "fca58c8914861c18f4b5ed3976c808f93737e7f5c010b462697ea6e786a7674b",
+    "NachOS-4.0_MP3/tests/scheduling_trace.py": "c04396393c084bd0b00c7bf84334396b728c932dee0869f0ba9577abab37f458",
+    "NachOS-4.0_MP3/tests/shutdown.py": "f3a552892677e0df112b986ebd41fef6838d9017303e18df00dfb7ed81ef7831",
+    "NachOS-4.0_MP3/tests/shutdown_trace.py": "eb4946377727f89184fe4cfc2646817285e8b42485530ab6ff5bfca62ff7ccad",
+    "NachOS-4.0_MP3/tests/user_memory.cc": "b63b9a314531f7263613799c02be6f13c5d7fa86fe4dd36d196933ed351312e7",
+    "NachOS-4.0_MP3/tests/user_memory.py": "9631787794efa75b241efcb20997754488481165e7a5032f8889b17883cf05df",
+    "NachOS-4.0_MP3/tests/user_memory_integration.py": "c1c9f5426f48a3cc1172af266e7358e57d5f699b5dabf044f35f572e5ee449aa",
+    "NachOS-4.0_MP3/tests/user_memory_user.c": "95fc606621b777e143258863107724d8de426f50523c1c3ed6a3ffc358f75fcb"
+  }
+}
